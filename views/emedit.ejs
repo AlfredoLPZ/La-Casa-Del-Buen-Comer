@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body{
+            margin: 0;
+            color: #04364A;
+            background-color: #FFFFFF;
+            font-family: "Lucida Console", monospace;
+        }
+        .form-edit{
+            width: 400px;
+            margin: 200px auto;
+            text-align: left !important;
+        }
+        .form-edit h1{
+            text-align: center;
+        }
+        .form-edit input[type="text"],
+        .form-edit input[type="password"]{
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #FF0060;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+        .select{
+            display: block;
+            width: 100%;
+            font-family: "Lucida Console", monospace;
+            padding: 5px;
+            margin: 5px 0;
+            color: #04364A;
+            background-color: #FFFFFF;
+            border: 2px solid #FF0060;
+            border-radius: 5px;
+        }
+        .bt-verde{
+            width: 100%;
+            background-color: #00DFA2;
+            color: #FFFFFF;
+            border: 2px solid #00DFA2;
+            border-radius: 5px;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0px;
+        }
+        .bt-verde:active, .bt-verde:hover{
+            background-color: #FFFFFF;
+            color: #00DFA2;
+        }
+        .bt-rojo{
+            display: block;
+            width: 94%;
+            background-color: #FF0060;
+            color: #FFFFFF;
+            border: 2px solid #FF0060;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            appearance: button;
+        }
+        .bt-rojo:active, .bt-rojo:hover{
+            background-color: #FFFFFF;
+            color: #FF0060;
+        }
+    </style>
+    <title>EDITAR EMPLEADO</title>
+</head>
+<body>         
+    <div class="form-edit">
+        <h1>EDITAR EMPLEADO</h1>
+        <% if (user) { %>
+            <form action="/emupdate" method="POST">
+                <input id="id" name="id" value="<%= user.id %>" hidden>          
+                <label for="user">USUARIO</label>
+                <input type="text" name="user" value="<%= user.user %>" autofocus>
+                <label for="name">NOMBRE</label>
+                <input type="text" name="name" value="<%= user.name %>">
+                <label for="rol">CATEGORIA</label>                          
+                <select id="rol" name="rol" class="select">
+                    <option <%= user.rol='ADMINISTRADOR' ? "selected" : '' %> value="ADMINISTRADOR" selected>ADMINISTRADOR</option>
+                    <option <%= user.rol='REPARTIDOR' ? "selected" : '' %> value="REPARTIDOR">REPARTIDOR</option>                    
+                </select>
+                <div style="display: inline;">
+                    <input type="submit" class="bt-verde" value="GUARDAR">             
+                    <a href="/emindex" class="bt-rojo">CANCELAR</a>           
+                </div>
+            </form>
+        <% } %>
+    </div>
+</body>
+</html>

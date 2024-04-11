@@ -1,0 +1,235 @@
+/*GLOBAL*/
+body{
+    margin: 0;
+    color: #04364A;
+    background-color: #FFFFFF;
+    font-family: "Lucida Console", monospace !important;
+}
+a{
+    text-decoration: none
+}
+
+/*ADMINISTRADOR*/
+/*INDEX*/
+.index{
+    width: 90%;
+    margin: 50px auto;
+}
+
+/*MENU*/
+.menu-admin{
+    width: 100%;
+    border-collapse: collapse;
+}
+.menu-admin td{
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 25px;
+    padding: 15px 0;
+}
+.menu-admin a{
+    color: #04364A;
+}
+.menu-admin a:hover{
+    color: #176B87;
+}
+
+/*FORMULARIOS*/
+.form{
+    width: 600px;
+    margin: 200px auto;
+    text-align: center;
+}
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="number"]{
+    width: 50%;
+    padding: 15px;
+    border: 2px solid #04364A;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.form-alta{
+    width: 400px;
+    margin: 200px auto;
+    text-align: left !important;
+}
+.form-alta h1{
+    text-align: center;
+}
+.form-alta input[type="text"],
+.form-alta input[type="password"],
+.form-alta input[type="number"],
+.form-alta input[type="file"]{
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #04364A;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.select{
+    display: block;
+    width: 100%;
+    font-family: "Lucida Console", monospace;
+    padding: 10px 5px;
+    margin: 5px 0;
+    color: #04364A;
+    background-color: #FFFFFF;
+    border: 2px solid #04364A;
+    border-radius: 5px;
+}
+.select-categoria{
+    display: block;
+    width: auto;
+    font-family: "Lucida Console", monospace;
+    padding: 10px 5px;
+    margin: 5px 0;
+    color: #04364A;
+    background-color: #FFFFFF;
+    border: 2px solid #04364A;
+    border-radius: 5px;
+}
+.select-visible{
+    display: block;
+    width: auto;
+    font-family: "Lucida Console", monospace;
+    padding: 5px 5px;
+    margin: 5px 0;
+    color: #04364A;
+    background-color: #FFFFFF;
+    border: 2px solid #04364A;
+    border-radius: 5px;
+}
+
+/*TABLAS*/
+.tabla{
+    background-color: #FFFFFF;
+}
+
+/*BOTONES*/
+.bt-form-a{
+    width: 50%;
+    background-color: #0079FF;
+    color: #FFFFFF;
+    border: 2px solid #0079FF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.bt-form-a:active, .bt-form-a:hover{
+    background-color: #FFFFFF;
+    color: #0079FF;
+}
+.bt-form-b{
+    width: 50%;
+    background-color: #FF0060;
+    color: #FFFFFF;
+    border: 2px solid #FF0060;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+.bt-form-b:active, .bt-form-b:hover{
+    background-color: #FFFFFF;
+    color: #FF0060;
+}
+.bt-save{
+    width: 100%;
+    padding: 15px;
+    color: #FFFFFF;
+    background-color: #0079FF;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.bt-save:hover, .bt-save:active{
+    color: #0079FF;
+    background-color: #FFFFFF;
+    border-color: #0079FF;
+    transition: .2s linear;
+}
+.bt-cancel{
+    display: block;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    color: #FFFFFF;
+    background-color: #FF0060;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 5px;
+    /*apariencia de boton*/
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+}
+.bt-cancel:hover, .bt-cancel:active{
+    color: #FF0060;
+    background-color: #FFFFFF;
+    border-color: #FF0060;
+    transition: .2s linear;
+}
+.azul{
+    background-color: #0079FF;
+    color: #FFFFFF;
+    border: 2px solid #0079FF;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.azul:active, .azul:hover{
+    background-color: #FFFFFF;
+    color: #0079FF;
+}
+.verde{
+    background-color: #00DFA2;
+    color: #FFFFFF;
+    border: 2px solid #00DFA2;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.verde:active, .verde:hover{
+    background-color: #FFFFFF;
+    color: #00DFA2;
+}
+.rojo{
+    background-color: #FF0060;
+    color: #FFFFFF;
+    border: 2px solid #FF0060;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.rojo:active, .rojo:hover{
+    background-color: #FFFFFF;
+    color: #FF0060;
+}
+.amarillo{
+    background-color: #F6FA70;
+    color: #FFFFFF;
+    border: 2px solid #F6FA70;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.amarillo:active, .amarillo:hover{
+    background-color: #FFFFFF;
+    color: #F6FA70;
+}

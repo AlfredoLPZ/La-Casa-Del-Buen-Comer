@@ -1,0 +1,178 @@
+/*HOJA DE ESTILOS PARA LA PAGINA WEB*/
+/*GLOBAL*/
+body{
+    margin: 0;
+    color: #1C6758;
+    background-color: #EEF2E6;
+    font-family: "Lucida Console", monospace !important;
+}
+a{
+    color: #1C6758;
+    text-decoration: none
+}
+a:hover{
+    color: #D6CDA4;
+    transition: .2s linear;
+}
+
+/*BARRA DE NAVEGACION*/
+.navegacion{
+    top: 0;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    word-spacing: 20px;
+    font-size: 30px;
+    background-color: #EEF2E6;
+}
+.actual{
+    color: #D6CDA4;
+}
+
+/*CONTENIDO*/
+.contenido{
+    width: 90%;
+    margin: 100px auto 50px auto;
+    text-align: center;
+}
+/*CARRUSEL*/
+.carousel{
+    width: 70%;
+    margin: 50px auto;
+}
+.carousel-item img{
+    max-height: 500px;
+    width: auto;
+    border-radius: 50px;
+    opacity: 0.7;
+}
+.carousel-caption{
+    color: #1C6758;
+}
+.carousel-caption h5{
+    font-size: 60px;
+    font-weight: bold;
+}
+.carousel-caption p{
+    font-size: 25px;
+    font-weight: bold;
+}
+/*PEDIDOS POR WA*/
+.bt-wa{
+    background-color: #1C6758;
+    color: #EEF2E6;
+    border: 2px solid #1C6758;
+    border-radius: 10px;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+.bt-wa:active, .bt-wa:hover{
+    background-color: #EEF2E6;
+    color: #1C6758;
+    transition: .2s linear;
+}
+/*MENU*/
+.img-menu{
+    height: 150px;
+    max-width: 180px;
+    border-radius: 20px;
+    border: 2px solid #1C6758;
+}
+/*INFORMACION DEL PLATILLO*/
+.info{
+    padding-left: 60px;
+}
+.nombre{
+    text-align: left;
+    font-weight: bold;
+    color: #1C6758;
+}
+.descripcion{
+    text-align: left;
+}
+.precio{
+    text-align: left;
+    font-weight: bold;
+    color: #FF6600;
+}
+/*FORMULARIO PARA AGREGAR UN COMENTARIO*/
+.form-comentario{
+    width: 400px;
+    margin: 10px auto;
+    text-align: left !important;
+}
+.form-comentario h1{
+    text-align: center;
+}
+.form-comentario input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    background-color: #EEF2E6;
+    border: 2px solid #1C6758;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+/*BOTON PARA GUARDAR UN COMENTARIO*/
+.bt-guardar{
+    width: 100%;
+    padding: 10px;
+    background-color: #1C6758;
+    color: #EEF2E6;
+    border: 2px solid #1C6758;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.bt-guardar:hover, .bt-guardar:active{
+    color: #1C6758;
+    background-color: #EEF2E6;
+    border-color: #1C6758;
+    transition: .2s linear;
+}
+/*MOSTRAR LOS COMENTARIOS*/
+.ver-comen{
+    max-height: 750px;
+    overflow-y: auto;
+    border: 2px solid #1C6758;
+    border-radius: 10px;
+    padding: 10px;
+}
+.ver-comen::-webkit-scrollbar{
+    width: 10px;
+}
+.ver-comen::-webkit-scrollbar-thumb{
+    background-color: #1C6758;
+    border-radius: 5px;
+}
+/*COMENTARIO*/
+.comentario{
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/*FOOTER*/
+footer{
+    color: #D6CDA4;
+    background-color: #1C6758;
+    text-align: center;
+}
+footer a{
+    color: #D6CDA4;
+}
+/*MAPA*/
+.mapa{
+    width: 70%;
+    height: 500px;
+    margin: auto;
+    border-radius: 40px;
+    background-color: #EEF2E6;
+}
+/*DIRECCION Y CONTACTO*/
+.dir-con{
+    width: 70%;
+    margin: auto;
+    margin-top: 25px;
+}

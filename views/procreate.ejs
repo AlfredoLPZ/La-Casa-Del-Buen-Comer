@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="resources/css/sistema.css">
+<title>NUEVO PLATILLO</title>
+</head>
+<body>         
+    <div class="form-alta">
+        <h1>NUEVO PLATILLO</h1>
+        <form action="/procreate" method="POST" enctype="multipart/form-data">           
+            <label for="nombre">NOMBRE</label>
+            <input type="text" name="nombre" autofocus>
+            <label for="descrip">DESCRIPCION</label>
+            <input type="text" name="descrip">
+            <label for="categoria">CATEGORIA</label>                          
+            <select id="categoria" name="categoria" class="select">
+                <option value="DESAYUNO" selected>DESAYUNO</option>
+                <option value="COMIDA">COMIDA</option>
+                <option value="CENA">CENA</option>                    
+            </select>
+            <label for="precio">PRECIO</label>
+            <input type="number" name="precio">
+            <label for="imagen">IMAGEN</label>
+            <input type="file" name="imagen" accept="image/*">
+            <label for="visible">¿MOSTRAR EN EL MENU?</label>                          
+            <select id="visible" name="visible" class="select">
+                <option value="SÍ" selected>SÍ</option>
+                <option value="NO">NO</option>             
+            </select>
+            <div style="display: inline;">
+                <input type="submit" class="bt-save" value="GUARDAR">             
+                <a href="/proindex" class="bt-cancel">CANCELAR</a>           
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <% if (typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+            title:'<%= alertTitle %>',
+            text:'<%= alertMessage %>',
+            icon:'<%= alertIcon %>',
+            showConfirmButton: <%= showConfirmButton %>,
+            timer: <%= timer %>
+            }).then(()=>{
+               window.location='/<%= ruta %>'
+            })
+        </script>
+    <% } %>
+</body>
+</html>

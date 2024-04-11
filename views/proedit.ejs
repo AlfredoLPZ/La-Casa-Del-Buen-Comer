@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body{
+            margin: 0;
+            color: #04364A;
+            background-color: #FFFFFF;
+            font-family: "Lucida Console", monospace;
+        }
+        .form-edit{
+            width: 400px;
+            margin: 200px auto;
+            text-align: left !important;
+        }
+        .form-edit h1{
+            text-align: center;
+        }
+        .form-edit input[type="text"],
+        .form-edit input[type="password"],
+        .form-edit input[type="number"],
+        .form-edit input[type="file"]{
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DA3939;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+        .select{
+            display: block;
+            width: 100%;
+            font-family: "Lucida Console", monospace;
+            padding: 10px 5px;
+            margin: 5px 0;
+            color: #04364A;
+            background-color: #FFFFFF;
+            border: 2px solid #DA3939;
+            border-radius: 5px;
+        }
+        .bt-verde{
+            width: 100%;
+            background-color: #00DFA2;
+            color: #FFFFFF;
+            border: 2px solid #00DFA2;
+            border-radius: 5px;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0px;
+        }
+        .bt-verde:active, .bt-verde:hover{
+            background-color: #FFFFFF;
+            color: #00DFA2;
+        }
+        .bt-rojo{
+            display: block;
+            width: 94%;
+            background-color: #DA3939;
+            color: #FFFFFF;
+            border: 2px solid #DA3939;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            appearance: button;
+        }
+        .bt-rojo:active, .bt-rojo:hover{
+            background-color: #FFFFFF;
+            color: #DA3939;
+        }
+    </style>
+    <title>EDITAR PLATILLO</title>
+</head>
+<body>         
+    <div class="form-edit">
+        <h1>EDITAR PLATILLO</h1>
+        <% if (nombre) { %>
+        <form action="/proupdate" method="POST">
+            <input id="id" name="id" value="<%= nombre.id %>" hidden>          
+            <label for="nombre">NOMBRE</label>
+            <input type="text" name="nombre" value="<%= nombre.nombre %>" autofocus>
+            <label for="descrip">DESCRIPCION</label>
+            <input type="text" name="descrip" value="<%= nombre.descrip %>">
+            <label for="categoria">CATEGORIA</label>                          
+            <select id="categoria" name="categoria" class="select">
+                <option <%= nombre.categoria='DESAYUNO' ? "selected" : '' %> value="DESAYUNO" selected>DESAYUNO</option>
+                <option <%= nombre.categoria='COMIDA'%> value="COMIDA">COMIDA</option>
+                <option <%= nombre.categoria='CENA'%> value="CENA">CENA</option>                    
+            </select>
+            <label for="precio">PRECIO</label>
+            <input type="number" name="precio"  value="<%= nombre.precio %>">
+            <label for="visible">¿MOSTRAR EN EL MENU?</label>
+            <div style="display: inline;">
+                <input type="submit" class="bt-verde" value="GUARDAR">             
+                <a href="/proindex" class="bt-rojo">CANCELAR</a>           
+            </div>
+        </form>
+        <% } %>
+    </div>
+</body>
+</html>
