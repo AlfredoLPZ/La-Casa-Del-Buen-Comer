@@ -194,10 +194,9 @@ app.get('/comentarios', (req, res)=>{
 app.post('/register', async (req, res)=>{
 	const user = req.body.user;
 	const name = req.body.name;
-    const rol = req.body.rol;
 	const pass = req.body.pass;
 	let passwordHash = await bcrypt.hash(pass, 8);
-    connection.query('INSERT INTO usuarios SET ?',{user:user, name:name, rol:rol, pass:passwordHash}, async (error, results)=>{
+    connection.query('INSERT INTO usuarios SET ?',{user:user, name:name, pass:passwordHash}, async (error, results)=>{
         if(error){
             console.log(error);
         }else{            
@@ -291,8 +290,7 @@ app.post('/emupdate', (req, res)=>{
     const id = req.body.id;
     const user = req.body.user;
     const name = req.body.name;
-    const rol = req.body.rol;
-    connection.query('UPDATE usuarios SET user=?, name=?, rol=? WHERE id=?', [user, name, rol, id], (error, results)=>{
+    connection.query('UPDATE usuarios SET user=?, name=? WHERE id=?', [user, name, id], (error, results)=>{
 		if(error){
 			console.log(error);
             }else{

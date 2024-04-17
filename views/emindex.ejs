@@ -17,7 +17,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">USUARIO</th>
-          <th scope="col">ROL</th>
+          <th scope="col">NOMBRE</th>
           <th scope="col">OPCIONES</th>
         </tr>
       </thead>
@@ -26,7 +26,7 @@
             <tr>
             <td><%= user.id %></td>
             <td><%= user.user %></td>
-            <td><%= user.rol %></td>
+            <td><%= user.name %></td>
             <td>
                 <a href="emedit/<%= user.id %>" class="verde">EDITAR</a>
                 <a href="emborrar/<%= user.id %>" class="rojo">BORRAR</a>

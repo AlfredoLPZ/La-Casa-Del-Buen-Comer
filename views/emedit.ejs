@@ -85,11 +85,6 @@
                 <input type="text" name="user" value="<%= user.user %>" autofocus>
                 <label for="name">NOMBRE</label>
                 <input type="text" name="name" value="<%= user.name %>">
-                <label for="rol">CATEGORIA</label>                          
-                <select id="rol" name="rol" class="select">
-                    <option <%= user.rol='ADMINISTRADOR' ? "selected" : '' %> value="ADMINISTRADOR" selected>ADMINISTRADOR</option>
-                    <option <%= user.rol='REPARTIDOR' ? "selected" : '' %> value="REPARTIDOR">REPARTIDOR</option>                    
-                </select>
                 <div style="display: inline;">
                     <input type="submit" class="bt-verde" value="GUARDAR">             
                     <a href="/emindex" class="bt-rojo">CANCELAR</a>           

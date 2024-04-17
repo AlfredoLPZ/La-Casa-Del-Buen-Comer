@@ -19,7 +19,7 @@
       <!-- DIV PARA DESAYUNOS -->
       <div id="desayunos" style="display: none;">
         <h1>DESAYUNOS</h1>
-        <h4>DISPONIBLE DE 08:30 A 12:00</h4>
+        <h4>DISPONIBLE DE 09:00 A 12:00</h4>
         <% desayunos.forEach((desayuno)=>{ %>
           <div class="row" style="margin: 10px 0px;">
             <div class="col-1">
@@ -36,7 +36,7 @@
       <!-- DIV PARA COMIDAS -->
       <div id="comidas" style="display: none;">
         <h1>COMIDAS</h1>
-        <h4>DISPONIBLE DE 13:00 A 19:00</h4>
+        <h4>DISPONIBLE DE 12:00 A 18:30</h4>
         <% comidas.forEach((comida)=>{ %>
           <div class="row" style="margin: 10px 0px;">
             <div class="col-1">
@@ -46,23 +46,6 @@
               <h2 class="nombre"><%= comida.nombre %></h2>
               <p class="descripcion"><%= comida.descrip %></p>
               <h5 class="precio">PRECIO: $<%= comida.precio %></h5>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-      <!-- DIV PARA CENAS -->
-      <div id="cenas" style="display: none;">
-        <h1>CENAS</h1>
-        <h4>DISPONIBLE DE 19:00 A 22:00</h4>
-        <% cenas.forEach((cena)=>{ %>
-          <div class="row" style="margin: 10px 0px;">
-            <div class="col-1">
-              <img src="<%= cena.imagen %>" alt="Imagen del platillo" class="img-menu">
-            </div>
-            <div class="col-11 info">
-              <h2 class="nombre"><%= cena.nombre %></h2>
-              <p class="descripcion"><%= cena.descrip %></p>
-              <h5 class="precio">PRECIO: $<%= cena.precio %></h5>
             </div>
           </div>
         <% }) %>
@@ -81,7 +64,7 @@
               <h3>DIRECCION</h3>
               <p>- Mocorito 53, Alvaro Obregon</p>
               <h3>HORARIO</h3>
-              <p>- Lunes a Domingo de 00:00 a 00:00</p>
+              <p>- Lunes a Domingo de 09:00 a 18:30</p>
             </div>
             <div class="col contacto">
               <h3>CONTACTO</h3>
@@ -90,7 +73,7 @@
               <a href="https://mx.pinterest.com/" target="_blank"><img src="/resources/css/imgs/redes/pinterest-96.png" alt=""></a>
               <a href="https://www.tiktok.com/" target="_blank"><img src="/resources/css/imgs/redes/tiktok-96.png" alt=""></a>
               <a href="https://twitter.com/home" target="_blank"><img src="/resources/css/imgs/redes/twitterx-96.png" alt=""></a>
-              <a href="https://wa.me/525586108787" target="_blank"><img src="/resources/css/imgs/redes/whatsapp-96.png" alt=""></a>
+              <a href="https://wa.me/525587683642" target="_blank"><img src="/resources/css/imgs/redes/whatsapp-96.png" alt=""></a>
             </div>
           </div>
         </div>
@@ -106,15 +89,12 @@
       //FUNCION PARA MOSTRAR EL MENU CORRESPONDIENTE A LA HORA
       function mostrarMenuSegunHora() {
         const hora = obtenerHoraActual(); 
-        if (hora >= 8 && hora < 13){
+        if (hora >= 9 && hora < 12){
           //MOSTRAR EL MENU DESAYUNOS
           document.getElementById('desayunos').style.display = 'block';
-        } else if (hora >= 13 && hora < 19){
+        } else if (hora >= 12 && hora < 23){
           //MOSTRAR EL MENU COMIDAS
           document.getElementById('comidas').style.display = 'block';
-        } else {
-          //MOSTRAR EL MENU CENAS
-          document.getElementById('cenas').style.display = 'block';
         }
       }
       //LLAMA LA FUNCION AL CARGAR LA PAGINA
