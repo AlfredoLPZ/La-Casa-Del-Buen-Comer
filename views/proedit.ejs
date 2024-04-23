@@ -90,7 +90,8 @@
             <label for="categoria">CATEGORIA</label>                          
             <select id="categoria" name="categoria" class="select">
                 <option <%= nombre.categoria='DESAYUNO' ? "selected" : '' %> value="DESAYUNO" selected>DESAYUNO</option>
-                <option <%= nombre.categoria='COMIDA'%> value="COMIDA">COMIDA</option>              
+                <option <%= nombre.categoria='COMIDA'%> value="COMIDA">COMIDA</option>
+                <option <%= nombre.categoria='BEBIDA'%> value="BEBIDA">BEBIDA</option>               
             </select>
             <label for="precio">PRECIO</label>
             <input type="number" name="precio"  value="<%= nombre.precio %>">

@@ -1,9 +1,11 @@
+/*IMPORTACION DE FUENTE*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 /*GLOBAL*/
 body{
     margin: 0;
     color: #04364A;
     background-color: #FFFFFF;
-    font-family: "Lucida Console", monospace !important;
+    font-family: "Roboto Slab", serif !important;
 }
 a{
     text-decoration: none
@@ -33,6 +35,11 @@ a{
 }
 .menu-admin a:hover{
     color: #176B87;
+}
+/*OPCION DEL MENU*/
+.opcion{
+    padding: 10px;
+    font-size: 30px;
 }
 
 /*FORMULARIOS*/
@@ -102,11 +109,6 @@ a{
     background-color: #FFFFFF;
     border: 2px solid #04364A;
     border-radius: 5px;
-}
-
-/*TABLAS*/
-.tabla{
-    background-color: #FFFFFF;
 }
 
 /*BOTONES*/

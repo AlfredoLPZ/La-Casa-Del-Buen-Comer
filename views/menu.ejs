@@ -17,35 +17,52 @@
     <!-- CONTENIDO DE LA PAGINA -->
     <section class="contenido">
       <!-- DIV PARA DESAYUNOS -->
-      <div id="desayunos" style="display: none;">
+      <div class="menu">
         <h1>DESAYUNOS</h1>
         <h4>DISPONIBLE DE 09:00 A 12:00</h4>
         <% desayunos.forEach((desayuno)=>{ %>
           <div class="row" style="margin: 10px 0px;">
-            <div class="col-1">
+            <div class="col-2">
               <img src="<%= desayuno.imagen %>" alt="Imagen del platillo" class="img-menu">
             </div>
-            <div class="col-11 info">
+            <div class="col-10 info">
               <h2 class="nombre"><%= desayuno.nombre %></h2>
               <p class="descripcion"><%= desayuno.descrip %></p>
-              <h5 class="precio">PRECIO: $<%= desayuno.precio %></h5>
+              <h5 class="precio">PRECIO: $<%= desayuno.precio %> PESOS</h5>
             </div>
           </div>
         <% }) %>
       </div>
       <!-- DIV PARA COMIDAS -->
-      <div id="comidas" style="display: none;">
+      <div class="menu">
         <h1>COMIDAS</h1>
         <h4>DISPONIBLE DE 12:00 A 18:30</h4>
         <% comidas.forEach((comida)=>{ %>
           <div class="row" style="margin: 10px 0px;">
-            <div class="col-1">
+            <div class="col-2">
               <img src="<%= comida.imagen %>" alt="Imagen del platillo" class="img-menu">
             </div>
-            <div class="col-11 info">
+            <div class="col-10 info">
               <h2 class="nombre"><%= comida.nombre %></h2>
               <p class="descripcion"><%= comida.descrip %></p>
               <h5 class="precio">PRECIO: $<%= comida.precio %></h5>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <!-- BEBIDAS? -->
+      <div class="menu">
+        <h1>BEBIDAS</h1>
+        <h4>DISPONIBLE DE 09:00 A 18:30</h4>
+        <% babidas.forEach((bebida)=>{ %>
+          <div class="row" style="margin: 10px 0px;">
+            <div class="col-2">
+              <img src="<%= bebida.imagen %>" alt="Imagen del platillo" class="img-menu">
+            </div>
+            <div class="col-10 info">
+              <h2 class="nombre"><%= bebida.nombre %></h2>
+              <p class="descripcion"><%= bebida.descrip %></p>
+              <h5 class="precio">PRECIO: $<%= bebida.precio %></h5>
             </div>
           </div>
         <% }) %>
@@ -79,26 +96,5 @@
         </div>
       </div>
     </footer>
-    <!-- SCRIPT PARA SOLO MOSTRAR UN MENU DEPENDIENDO DE LA HORA -->
-    <script>
-      //FUNCION PARA OBTENER LA HORA LOCAL
-      function obtenerHoraActual(){
-        const ahora = new Date();
-        return ahora.getHours();
-      }
-      //FUNCION PARA MOSTRAR EL MENU CORRESPONDIENTE A LA HORA
-      function mostrarMenuSegunHora() {
-        const hora = obtenerHoraActual(); 
-        if (hora >= 9 && hora < 12){
-          //MOSTRAR EL MENU DESAYUNOS
-          document.getElementById('desayunos').style.display = 'block';
-        } else if (hora >= 12 && hora < 23){
-          //MOSTRAR EL MENU COMIDAS
-          document.getElementById('comidas').style.display = 'block';
-        }
-      }
-      //LLAMA LA FUNCION AL CARGAR LA PAGINA
-      mostrarMenuSegunHora();
-    </script>
   </body>
 </html>

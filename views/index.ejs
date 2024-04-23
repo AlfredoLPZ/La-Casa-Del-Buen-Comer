@@ -11,13 +11,33 @@
     <div class="form">
       <h1>INICIO</h1>
       <% if (login) { %>                
-        <h1>USUARIO CONECTADO: <strong><%= name %></strong></h1>        
+        <h1 style="margin: 20px;">USUARIO CONECTADO: <%= name %></h1>        
         <div class="container text-center menu-admin">
           <div class="row row-cols-2">
-            <div class="col"><a href="emindex">USUARIOS</a></div>
-            <div class="col"><a href="vercomen">VER COMENTARIOS</a></div>
-            <div class="col"><a href="proindex">PLATILLOS</a></div>
-            <div class="col"><a href="menus">MENUS</a></div>
+            <div class="col opcion">
+              <a href="emindex">
+                <img src="/resources/css/imgs/menu-sistema/usuarios.png" alt="Usuarios">
+                <p>USUARIOS</p>
+              </a>
+            </div>
+            <div class="col opcion">
+              <a href="vercomen">
+                <img src="/resources/css/imgs/menu-sistema/comentarios.png" alt="Comentarios">
+                <p>COMENTARIOS</p>
+              </a>
+            </div>
+            <div class="col opcion">
+              <a href="proindex">
+                <img src="/resources/css/imgs/menu-sistema/platillos.png" alt="Platillos">
+                <p>PLATILLOS</p>
+              </a>
+            </div>
+            <div class="col opcion">
+              <a href="menus">
+                <img src="/resources/css/imgs/menu-sistema/menu.png" alt="Menus">
+                <p>MENUS</p>
+              </a>
+            </div>
           </div>
         </div>
         <br>

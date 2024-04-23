@@ -1,7 +1,9 @@
 /*
-Instalacion de modulos: npm i express express-session mysql ejs dotenv bcryptjs multer
-Instalacion de nodemon: npm install -g nodemon
 Arrancar el proyecto: nodemon app (en terminal del vsc)
+modulos: npm i express express-session mysql ejs dotenv bcryptjs multer
+instalar nodemon: npm install -g nodemon
+saber que modulos estan instalados: npm ls --prod
+saber la version de nodemon: nodemon --version
 Error con node: set-executionpolicy unrestricted -force (en powershell administrador)
 phpMyAdmin: http://localhost/phpmyadmin/
 */
@@ -157,7 +159,7 @@ app.get('/inicio', (req, res)=>{
 });
 //PAGINA DEL MENU
 app.get('/menu', (req, res)=>{
-	let desayunos, comidas, cenas;
+	let desayunos, comidas, bebidas;
 	connection.query('SELECT * FROM platillos WHERE categoria = "DESAYUNO" AND visible = "SÍ"', (error1, results1)=>{
 	  if(error1){
 		console.log(error1);
@@ -168,12 +170,12 @@ app.get('/menu', (req, res)=>{
 		  console.log(error2);
 		}
 		comidas = results2;
-		connection.query('SELECT * FROM platillos WHERE categoria = "CENA" AND visible = "SÍ"', (error3, results3)=>{
+		connection.query('SELECT * FROM platillos WHERE categoria = "BEBIDA" AND visible = "SÍ"', (error3, results3)=>{
 			if(error3){
 			  console.log(error3);
 			}
-			cenas = results3;
-			res.render('menu', { desayunos: desayunos, comidas: comidas, cenas:cenas });
+			bebidas = results3;
+			res.render('menu', { desayunos: desayunos, comidas: comidas, babidas:bebidas });
 			});
 	  	});
 	});
