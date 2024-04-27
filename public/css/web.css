@@ -7,18 +7,28 @@ body{
     color: #1C6758;
     background-color: #EEF2E6;
     font-family: "Amatic SC", sans-serif !important;
-    font-weight: 400;
+    font-weight: 600;
     font-style: normal;
+    font-size: 25px;
 }
 a{
     color: #1C6758;
-    text-decoration: none
+    text-decoration: none;
 }
 a:hover{
     color: #D6CDA4;
     transition: .2s linear;
 }
-
+h1{
+    font-size: 70px;
+    font-weight: 800;
+}
+h2{
+    font-size: 50px;
+}
+h3{
+    font-size: 40px;
+}
 /*BARRA DE NAVEGACION*/
 .navegacion{
     top: 0;
@@ -28,13 +38,16 @@ a:hover{
     padding: 15px;
     word-spacing: 20px;
     font-size: 40px;
-    font-weight: 700;
+    font-weight: 800;
     background-color: #EEF2E6;
+    z-index: 1000;
 }
 .actual{
     color: #D6CDA4;
 }
-
+.menu-img{
+    display: none;
+}
 /*CONTENIDO*/
 .contenido{
     width: 90%;
@@ -50,18 +63,17 @@ a:hover{
     max-height: 500px;
     width: auto;
     border-radius: 50px;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 .carousel-caption{
     color: #1C6758;
 }
-.carousel-caption h5{
+.carousel-caption h2{
     font-size: 60px;
-    font-weight: bold;
+    font-weight: 800;
 }
 .carousel-caption p{
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 40px;
 }
 /*PEDIDOS POR WA*/
 .bt-wa{
@@ -159,7 +171,6 @@ a:hover{
 }
 /*COMENTARIO*/
 .comentario{
-    font-size: 25px;
     text-align: left;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -185,4 +196,87 @@ footer a{
     width: 70%;
     margin: auto;
     margin-top: 25px;
+}
+
+/*
+DISEÑO RESPONSIVO DE LA PAGINA WEB
+(MEDIA QUERY)
+*/
+@media (max-width: 500px){
+    /*GLOBAL*/
+    body{
+        font-size: 20px;
+    }
+    h1{
+        font-size: 60px;
+        font-weight: 800;
+    }
+    h2{
+        font-size: 50px;
+    }
+    h3{
+        font-size: 30px;
+    }
+    /*BARRA DE NAVEGACION*/
+    .nav-links{
+        top: 0;
+        left: 0;
+        position: fixed;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100vh;
+        clip-path: circle(0% at top left);
+        transition: clip-path .5s;
+        background-color: #EEF2E6;
+    }
+    .nav-links:target{
+        clip-path: circle(150% at top left);
+    }
+    .menu-img{
+        display: flex;
+    }
+    .menu-img img{
+        width: auto;
+    }
+    /*CARRUSEL*/
+    .carousel{
+        width: auto;
+        margin: 25px auto;
+    }
+    .carousel-item img{
+        height: 100%;
+        border-radius: 20px;
+    }
+    /*PEDIDOS POR WA*/
+    .img-wa{
+        display: none;
+    }
+    /*COMENTARIOS*/
+    .form-comentario label{
+        margin-top: 10px;
+        text-align: center;
+    }
+    .col-8{
+        width: 100%;
+    }
+    .ver-comen{
+        height: 500px;
+    }
+    /*MAPA*/
+    .mapa{
+        width: 90%;
+        height: 150px;
+        margin: auto;
+        border-radius: 40px;
+        background-color: #EEF2E6;
+    }
+    /*DIRECCION Y CONTACTO*/
+    .dir-con{
+        width: 90%;
+    }
+    .dir-con img{
+        height: 50px;
+        width: auto;
+    }
 }

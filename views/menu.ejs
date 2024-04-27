@@ -4,31 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="resources/css/web.css">
     <title>MENU</title>
   </head>
   <body>
     <!-- BARRA DE NAVEGACION -->
     <nav class="navegacion">
-      <a href="inicio">INICIO</a>
-      <a href="menu" class="actual">MENÚ</a>
-      <a href="comentarios">COMENTARIOS</a>
+      <a href="#menu" class="menu-img">
+        <img src="/resources/css/imgs/menu.png" alt="menu">
+      </a>
+      <div class="nav-links" id="menu">
+        <a href="inicio" class="actual">INICIO</a>
+        <a href="menu">MENÚ</a>
+        <a href="comentarios">COMENTARIOS</a>
+      </div>
     </nav>
     <!-- CONTENIDO DE LA PAGINA -->
     <section class="contenido">
       <!-- DIV PARA DESAYUNOS -->
       <div class="menu">
         <h1>DESAYUNOS</h1>
-        <h4>DISPONIBLE DE 09:00 A 12:00</h4>
+        <h2>DISPONIBLE DE 09:00 A 12:00</h2>
         <% desayunos.forEach((desayuno)=>{ %>
           <div class="row" style="margin: 10px 0px;">
             <div class="col-2">
               <img src="<%= desayuno.imagen %>" alt="Imagen del platillo" class="img-menu">
             </div>
             <div class="col-10 info">
-              <h2 class="nombre"><%= desayuno.nombre %></h2>
+              <h3 class="nombre"><%= desayuno.nombre %></h3>
               <p class="descripcion"><%= desayuno.descrip %></p>
-              <h5 class="precio">PRECIO: $<%= desayuno.precio %> PESOS</h5>
+              <h3 class="precio">PRECIO: $<%= desayuno.precio %> PESOS</h3>
             </div>
           </div>
         <% }) %>
@@ -36,16 +42,16 @@
       <!-- DIV PARA COMIDAS -->
       <div class="menu">
         <h1>COMIDAS</h1>
-        <h4>DISPONIBLE DE 12:00 A 18:30</h4>
+        <h2>DISPONIBLE DE 12:00 A 18:30</h2>
         <% comidas.forEach((comida)=>{ %>
           <div class="row" style="margin: 10px 0px;">
             <div class="col-2">
               <img src="<%= comida.imagen %>" alt="Imagen del platillo" class="img-menu">
             </div>
             <div class="col-10 info">
-              <h2 class="nombre"><%= comida.nombre %></h2>
+              <h3 class="nombre"><%= comida.nombre %></h3>
               <p class="descripcion"><%= comida.descrip %></p>
-              <h5 class="precio">PRECIO: $<%= comida.precio %></h5>
+              <h3 class="precio">PRECIO: $<%= comida.precio %></h3>
             </div>
           </div>
         <% }) %>
@@ -53,16 +59,16 @@
       <!-- BEBIDAS? -->
       <div class="menu">
         <h1>BEBIDAS</h1>
-        <h4>DISPONIBLE DE 09:00 A 18:30</h4>
+        <h2>DISPONIBLE DE 09:00 A 18:30</h2>
         <% babidas.forEach((bebida)=>{ %>
           <div class="row" style="margin: 10px 0px;">
             <div class="col-2">
               <img src="<%= bebida.imagen %>" alt="Imagen del platillo" class="img-menu">
             </div>
             <div class="col-10 info">
-              <h2 class="nombre"><%= bebida.nombre %></h2>
+              <h3 class="nombre"><%= bebida.nombre %></h3>
               <p class="descripcion"><%= bebida.descrip %></p>
-              <h5 class="precio">PRECIO: $<%= bebida.precio %></h5>
+              <h3 class="precio">PRECIO: $<%= bebida.precio %></h3>
             </div>
           </div>
         <% }) %>
@@ -70,8 +76,8 @@
     </section>      
     <!-- SECCION INFERIOR DE LA PAGINA -->    
     <footer>
-      <h1>AQUI ESTAMOS</h1>
-      <div class="mapa" id="mapa">
+      <h2>AQUI ESTAMOS</h2>
+      <div class="mapa" id="map">
         <p>AGREGAR EL MAPA</p>
       </div>
       <div class="dir-con">
@@ -96,5 +102,13 @@
         </div>
       </div>
     </footer>
+    <!-- SCRIPT PARA PODER MOSTRAR LA UBICACION DEL RESTAURANTE EN EL MAPA -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      var map = L.map('map').setView([19.412728109303536, -99.11861673473321], 16);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); //uso de OpenStreetMap como proveedor de mapas
+      var marker = L.marker([19.412728109303536, -99.11861673473321]).addTo(map);
+      marker.bindPopup("<b>¡Aquí estamos!</b>").openPopup();
+    </script>
   </body>
 </html>
