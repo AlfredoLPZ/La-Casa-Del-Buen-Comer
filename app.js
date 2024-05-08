@@ -190,7 +190,6 @@ app.get('/comentarios', (req, res)=>{
 		}
 	});
 });
-//CHATBOT
 
 //METODOS PARA EL SISTEMA
 //REGISTRO DE USUARIOS
