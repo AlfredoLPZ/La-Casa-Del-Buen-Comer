@@ -93,7 +93,7 @@ app.get('/emindex', sessionChecker, (req, res)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('emindex', {results:results,login:true});
+			res.render('emindex', {results:results, login:true});
 		}
 	});
 });
@@ -202,7 +202,7 @@ app.post('/register', async (req, res)=>{
         if(error){
             console.log(error);
         }else{            
-			res.redirect('register', {
+			res.render('register', {
 				alert: true,
 				alertTitle: "REGISTRO",
 				alertMessage: "USUARIO REGISTRADO CORRECTAMENTE",

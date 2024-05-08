@@ -74,7 +74,10 @@
       </div>
     </section>
     <!-- SECCION DEL CHATBOT -->
-    
+    <div class="chatbot" id="iframeContainer">
+      <iframe id="dialogflowFrame" width="350" height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/46334376-f50c-482f-b90c-140b4022d5bf"></iframe>
+    </div>
+    <button class="chatbot-bt" onclick="toggleDialogflow()">Chatbot</button>  
     <!-- SECCION INFERIOR DE LA PAGINA -->    
     <footer>
       <h2>AQUI ESTAMOS</h2>
@@ -111,6 +114,20 @@
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); //uso de OpenStreetMap como proveedor de mapas
       var marker = L.marker([19.412728109303536, -99.11861673473321]).addTo(map);
       marker.bindPopup("<b>¡Aquí estamos!</b>").openPopup();
+    </script>
+    <!-- SCRIPT PARA MOSTRAR Y OCULTAR EL IFRAME -->
+    <script>
+      function toggleDialogflow() {
+        var iframeContainer = document.getElementById('iframeContainer');
+        //VERIFICA EL ESTADO DEL CONTENEDOR DEL IFRAME
+        if(iframeContainer.style.display === 'none'){
+          //SI ESTA OCULTO, LO MUESTRA
+          iframeContainer.style.display = 'block';
+        } else {
+          //SI ESTA VISIBLE, LO OCULTA
+          iframeContainer.style.display = 'none';
+        }
+      }
     </script>
   </body>
 </html>

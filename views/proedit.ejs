@@ -94,8 +94,7 @@
                 <option <%= nombre.categoria='BEBIDA'%> value="BEBIDA">BEBIDA</option>               
             </select>
             <label for="precio">PRECIO</label>
-            <input type="number" name="precio"  value="<%= nombre.precio %>">
-            <label for="visible">¿MOSTRAR EN EL MENU?</label>
+            <input type="number" name="precio"  value="$<%= nombre.precio %>">
             <div style="display: inline;">
                 <input type="submit" class="bt-verde" value="GUARDAR">             
                 <a href="/proindex" class="bt-rojo">CANCELAR</a>           
