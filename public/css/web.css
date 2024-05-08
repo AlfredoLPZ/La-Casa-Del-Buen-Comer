@@ -51,7 +51,7 @@ h3{
 /*CONTENIDO*/
 .contenido{
     width: 90%;
-    margin: 100px auto 50px auto;
+    margin: 120px auto 50px auto;
     text-align: center;
 }
 /*CARRUSEL*/
@@ -156,7 +156,7 @@ h3{
 }
 /*MOSTRAR LOS COMENTARIOS*/
 .ver-comen{
-    height: 750px;
+    height: 700px;
     overflow-y: auto;
     border: 2px solid #1C6758;
     border-radius: 10px;
