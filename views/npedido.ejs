@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- DATATABLES -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+  <!-- -->
+  <link rel="stylesheet" href="resources/css/sistema.css">
+  <title>PEDIDOS</title>
+</head>
+<body>         
+  <section class="index">
+    <a href="index"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAACaklEQVRoQ+2ai1HDMAyG2w3KBmUDRggbwAZhAmACygTABLABbEA3gA1gA9gA9B9xKYkfsiPLKbXvfBxnydJnWUqjdj7bszHfM95ZBf7vEa8RVohwSzbOaS5o3tG8VbC5MaEd4QuyfNMDvKb/V1rQmsA2WMOpBq0F7INVhdYA5sCqQecGjoFVgc4J7IM1lRkytpEtp3MBh2AvO0pUbFXoHMBcWBNZVWhp4FhYdWhJ4FRYVWgp4LGwatASwFKwKtBjgaVhs0OPAc4FmxU6FTg3bDboFGAt2CzQscDasOLQMcClYEWhucClYcWgOcBTgRWBDgGH3mdD+rlaVV+ejb2vlj6HQ7CwOUVg+OWEdjncktI9IzxTBYbrpzSf+gwuh19I8GjHgT/J/4N9An4n2EMu8AkJPu54hNFGGnyr4cvBhhQwzbiyHEAoh5EWS2Z6YHtE5bWbvvO2VWkUKgxc5bVrj5DD20ZtRlz6C1JEr6pl3BKbCBw+6w7Ath7jyx/9HMCARTo0ibBGDdEe5GC3OCngFTllu/4p/A9dpPu6kwJGdFH0JIb10UIbTwr4gxzCtd4epqCEDoFbGCcFnOxMROSSbeQoWsnOVOCfBLAFJflQa4Q9VYV7qlw5mymuLlduYKNGuEb49wS414grV690fSzVx9ImC5LTplZpT5V+o7Vl6NN/oXXXW9Wo5zDatm0hoJDZNQkch4Rcn1Ndeg0tPHM2LSBj7UHb/IjJYeivaEp1M6TOBZ1J80O34J6xwNgQnUg06PC3/6IfNCgkgJxFdxM/MB98u+CzkQIs5HOZbSpwmXPXs1ojrHfWZSx9A19Zsj0r0R5WAAAAAElFTkSuQmCC"/></a>
+    <h1>ADMINISTRACION DE PEDIDOS</h1>
+    <a href="pedidos" class="rojo">REGRESAR</a>
+    <!-- NUEVO PEDIDO -->
+    <div class="row">
+      <!-- TABLA CON LOS PLATILLOS -->
+      <div class="col-4">
+        <h1>PLATILLOS DISPONIBLES</h1>
+        <table id="myTable" class="display table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">NOMBRE</th>
+              <th scope="col">PRECIO</th>
+              <th scope="col">AGREGAR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% results.forEach((platillo)=>{ %>
+            <tr>
+              <td><%= platillo.id %></td>
+              <td><%= platillo.nombre %></td>
+              <td>$<%= platillo.precio %></td>
+              <td>
+                <button class="add-to-cart" data-id="<%= platillo.id %>" data-nombre="<%= platillo.nombre %>" data-precio="<%= platillo.precio %>">Agregar</button>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <!-- FORMULARIO PARA GENERAR UN PEDIDO -->
+      <div class="col-8">
+        <h1>NUEVO PEDIDO</h1>
+        <!-- PLATILLOS DENTRO DEL PEDIDO -->
+        <div class="n-pedido">
+          <table class="table carrito">
+            <thead>
+              <tr>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">PRECIO</th>
+                <th scope="col">CANTIDAD</th>
+                <th scope="col">SUB TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+        <!-- TOTAL DEL PEDIDO-->
+        <div class="t-pedido">
+          <p>TOTAL DE PLATILLOS: <span id="total-platillos">0</span></p>
+          <p>TOTAL A PAGAR: <span id="total-cantidad">0</span></p>
+          <button id="finalizar-pedido">FINALIZAR PEDIDO</button>
+        </div>
+      </div>
+    </div>
+    <!-- PEDIDOS GUARDADOS -->
+    <div id="notification" class="hidden">
+      <span id="notification-message"></span>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
+  <!-- SCRIPT PARA CARGAR EL DATATABLE -->
+  <script>
+    $(document).ready(function(){
+      $('#myTable').DataTable({
+        "language":{"url":"/resources/es-MX.json"}
+      });
+    });
+  </script>
+  <!-- SCRIPT PARA ADMINISTRAR EL PEDIDO -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addToCartButtons = document.querySelectorAll('.add-to-cart');
+      const totalPlatillosElement = document.getElementById('total-platillos');
+      const totalCantidadElement = document.getElementById('total-cantidad');
+      const finalizarPedidoButton = document.getElementById('finalizar-pedido');
+
+      function updateTotals() {
+        const carritoTable = document.querySelector('.table.carrito tbody');
+        const rows = carritoTable.querySelectorAll('tr');
+        let totalPlatillos = 0;
+        let totalCantidad = 0;
+
+        rows.forEach(row => {
+          const cantidad = parseInt(row.querySelector('.cantidad span').textContent);
+          const subtotal = parseFloat(row.querySelector('.subtotal').textContent.replace('$', ''));
+          totalPlatillos += cantidad;
+          totalCantidad += subtotal;
+        });
+
+        totalPlatillosElement.textContent = totalPlatillos;
+        totalCantidadElement.textContent = `$${totalCantidad.toFixed(2)}`;
+      }
+
+      function showNotification(message) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        notificationMessage.textContent = message;
+        notification.classList.remove('hidden');
+        notification.classList.add('show');
+        setTimeout(() => {
+          notification.classList.remove('show');
+          notification.classList.add('hidden');
+        }, 3000); // Ocultar después de 3 segundos
+      }
+
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const id = this.getAttribute('data-id');
+          const nombre = this.getAttribute('data-nombre');
+          const precio = this.getAttribute('data-precio');
+
+          const carritoTable = document.querySelector('.table.carrito tbody');
+
+          // Verificar si el platillo ya está en el carrito
+          let existingRow = carritoTable.querySelector(`tr[data-id="${id}"]`);
+          if (existingRow) {
+            // Actualizar la cantidad y el subtotal
+            let cantidadCell = existingRow.querySelector('.cantidad span');
+            let subtotalCell = existingRow.querySelector('.subtotal');
+            let cantidad = parseInt(cantidadCell.textContent);
+            cantidad++;
+            cantidadCell.textContent = cantidad;
+            subtotalCell.textContent = `$${(cantidad * parseFloat(precio)).toFixed(2)}`;
+          } else {
+            // Crear una nueva fila en el carrito
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-id', id);
+            newRow.innerHTML = `
+              <td>${nombre}</td>
+              <td>$${precio}</td>
+              <td class="cantidad">
+                <button class="decrement">-</button>
+                <span>1</span>
+                <button class="increment">+</button>
+              </td>
+              <td class="subtotal">$${parseFloat(precio).toFixed(2)}</td>
+            `;
+            carritoTable.appendChild(newRow);
+
+            // Agregar eventos a los nuevos botones
+            newRow.querySelector('.increment').addEventListener('click', function() {
+              let cantidad = parseInt(newRow.querySelector('.cantidad span').textContent);
+              cantidad++;
+              newRow.querySelector('.cantidad span').textContent = cantidad;
+              newRow.querySelector('.subtotal').textContent = `$${(cantidad * parseFloat(precio)).toFixed(2)}`;
+              updateTotals();
+            });
+
+            newRow.querySelector('.decrement').addEventListener('click', function() {
+              let cantidad = parseInt(newRow.querySelector('.cantidad span').textContent);
+              if (cantidad > 1) {
+                cantidad--;
+                newRow.querySelector('.cantidad span').textContent = cantidad;
+                newRow.querySelector('.subtotal').textContent = `$${(cantidad * parseFloat(precio)).toFixed(2)}`;
+              } else {
+                carritoTable.removeChild(newRow);
+              }
+              updateTotals();
+            });
+          }
+          updateTotals();
+        });
+      });
+
+      finalizarPedidoButton.addEventListener('click', function() {
+        const carritoTable = document.querySelector('.table.carrito tbody');
+        const rows = carritoTable.querySelectorAll('tr');
+        let pedido = [];
+
+        rows.forEach(row => {
+          const id = row.getAttribute('data-id');
+          const nombre = row.querySelector('td:nth-child(1)').textContent;
+          const precio = parseFloat(row.querySelector('td:nth-child(2)').textContent.replace('$', ''));
+          const cantidad = parseInt(row.querySelector('.cantidad span').textContent);
+          pedido.push({ id, nombre, precio, cantidad });
+        });
+
+        // Enviar el pedido al servidor
+        fetch('/finalizar-pedido', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ pedido }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showNotification(`Pedido ${data.pedido_id} realizado con éxito!`);
+            // Limpiar el carrito
+            carritoTable.innerHTML = '';
+            updateTotals();
+          } else {
+            showNotification('Hubo un error al realizar el pedido.');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

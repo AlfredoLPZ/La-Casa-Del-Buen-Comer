@@ -22,63 +22,86 @@
     </nav>
     <!-- CONTENIDO DE LA PAGINA -->
     <section class="contenido">
-      <!-- DIV PARA DESAYUNOS -->
       <div class="menu">
-        <h1>DESAYUNOS</h1>
-        <h2>DISPONIBLE DE 09:00 A 12:00</h2>
-        <% desayunos.forEach((desayuno)=>{ %>
-          <div class="row" style="margin: 10px 0px;">
-            <div class="col-2">
-              <img src="<%= desayuno.imagen %>" alt="Imagen del platillo" class="img-menu">
-            </div>
-            <div class="col-10 info">
-              <h3 class="nombre"><%= desayuno.nombre %></h3>
-              <p class="descripcion"><%= desayuno.descrip %></p>
-              <h3 class="precio">PRECIO: $<%= desayuno.precio %> PESOS</h3>
-            </div>
+        <!-- DIV PARA DESAYUNOS -->
+        <div class="container">
+          <div class="row">
+            <h1>DESAYUNOS</h1>
+            <h2>DISPONIBLE DE 09:00 A 12:00</h2>
+            <% desayunos.forEach((desayuno, index) => { %>
+              <div class="col card-container">
+                <div class="card" id="desayuno-card<%= index %>">
+                  <div class="card-front">
+                    <img src="<%= desayuno.imagen %>" alt="Imagen del platillo" class="img-menu">
+                    <h5 class="card-title"><%= desayuno.nombre %></h5>
+                    <p class="card-text">PRECIO: $<%= desayuno.precio %> PESOS</p>
+                    <button class="btn btn-info" onclick="showDescription('desayuno', <%= index %>)">Ver más</button>
+                  </div>
+                  <div class="card-back" id="desayuno-back<%= index %>" style="display: none;">
+                    <h5 class="card-title"><%= desayuno.nombre %></h5>
+                    <p class="card-description"><%= desayuno.descrip %></p>
+                    <button class="btn btn-close" onclick="hideDescription('desayuno', <%= index %>)"></button>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
           </div>
-        <% }) %>
-      </div>
-      <!-- DIV PARA COMIDAS -->
-      <div class="menu">
-        <h1>COMIDAS</h1>
-        <h2>DISPONIBLE DE 12:00 A 18:30</h2>
-        <% comidas.forEach((comida)=>{ %>
-          <div class="row" style="margin: 10px 0px;">
-            <div class="col-2">
-              <img src="<%= comida.imagen %>" alt="Imagen del platillo" class="img-menu">
-            </div>
-            <div class="col-10 info">
-              <h3 class="nombre"><%= comida.nombre %></h3>
-              <p class="descripcion"><%= comida.descrip %></p>
-              <h3 class="precio">PRECIO: $<%= comida.precio %></h3>
-            </div>
+        </div>        
+        <!-- DIV PARA COMIDAS -->
+        <div class="container">
+          <div class="row">
+            <h1>COMIDAS</h1>
+            <h2>DISPONIBLE DE 12:00 A 18:30</h2>
+            <% comidas.forEach((comida, index) => { %>
+              <div class="col card-container">
+                <div class="card" id="comida-card<%= index %>">
+                  <div class="card-front">
+                    <img src="<%= comida.imagen %>" alt="Imagen del platillo" class="img-menu">
+                    <h5 class="card-title"><%= comida.nombre %></h5>
+                    <p class="card-text">PRECIO: $<%= comida.precio %> PESOS</p>
+                    <button class="btn btn-info" onclick="showDescription('comida', <%= index %>)">Ver más</button>
+                  </div>
+                  <div class="card-back" id="comida-back<%= index %>" style="display: none;">
+                    <h5 class="card-title"><%= comida.nombre %></h5>
+                    <p class="card-description"><%= comida.descrip %></p>
+                    <button class="btn btn-close" onclick="hideDescription('comida', <%= index %>)"></button>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
           </div>
-        <% }) %>
-      </div>
-      <!-- BEBIDAS? -->
-      <div class="menu">
-        <h1>BEBIDAS</h1>
-        <h2>DISPONIBLE DE 09:00 A 18:30</h2>
-        <% babidas.forEach((bebida)=>{ %>
-          <div class="row" style="margin: 10px 0px;">
-            <div class="col-2">
-              <img src="<%= bebida.imagen %>" alt="Imagen del platillo" class="img-menu">
-            </div>
-            <div class="col-10 info">
-              <h3 class="nombre"><%= bebida.nombre %></h3>
-              <p class="descripcion"><%= bebida.descrip %></p>
-              <h3 class="precio">PRECIO: $<%= bebida.precio %></h3>
-            </div>
+        </div>
+        <!-- DIV PARA BEBIDAS -->
+        <div class="container">
+          <div class="row">
+            <h1>BEBIDAS</h1>
+            <h2>DISPONIBLE DE 09:00 A 18:30</h2>
+            <% bebidas.forEach((bebida, index) => { %>
+              <div class="col card-container">
+                <div class="card" id="bebida-card<%= index %>">
+                  <div class="card-front">
+                    <img src="<%= bebida.imagen %>" alt="Imagen del platillo" class="img-menu">
+                    <h5 class="card-title"><%= bebida.nombre %></h5>
+                    <p class="card-text">PRECIO: $<%= bebida.precio %> PESOS</p>
+                    <button class="btn btn-info" onclick="showDescription('bebida', <%= index %>)">Ver más</button>
+                  </div>
+                  <div class="card-back" id="bebida-back<%= index %>" style="display: none;">
+                    <h5 class="card-title"><%= bebida.nombre %></h5>
+                    <p class="card-description"><%= bebida.descrip %></p>
+                    <button class="btn btn-close" onclick="hideDescription('bebida', <%= index %>)"></button>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
           </div>
-        <% }) %>
+        </div>
       </div>
+      <!-- DIV DEL CHATBOT -->
+      <div class="chatbot" id="iframeContainer">
+        <iframe id="dialogflowFrame" width="350" height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/46334376-f50c-482f-b90c-140b4022d5bf"></iframe>
+      </div>
+      <button class="chatbot-bt" onclick="toggleDialogflow()">Chatbot</button>        
     </section>
-    <!-- SECCION DEL CHATBOT -->
-    <div class="chatbot" id="iframeContainer">
-      <iframe id="dialogflowFrame" width="350" height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/46334376-f50c-482f-b90c-140b4022d5bf"></iframe>
-    </div>
-    <button class="chatbot-bt" onclick="toggleDialogflow()">Chatbot</button>        
     <!-- SECCION INFERIOR DE LA PAGINA -->    
     <footer>
       <h2>AQUI ESTAMOS</h2>
@@ -107,6 +130,17 @@
         </div>
       </div>
     </footer>
+    <!-- SCRIPT PARA MOSTRAR U OCULTAR LA INFORMACION DE LOS PLATILLOS -->
+    <script>
+      function showDescription(category, index) {
+        document.getElementById(`${category}-card${index}`).querySelector('.card-front').style.display = 'none';
+        document.getElementById(`${category}-back${index}`).style.display = 'block';
+      }
+      function hideDescription(category, index) {
+        document.getElementById(`${category}-card${index}`).querySelector('.card-front').style.display = 'block';
+        document.getElementById(`${category}-back${index}`).style.display = 'none';
+      }
+    </script>
     <!-- SCRIPT PARA PODER MOSTRAR LA UBICACION DEL RESTAURANTE EN EL MAPA -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>

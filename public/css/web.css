@@ -54,27 +54,8 @@ h3{
     margin: 120px auto 50px auto;
     text-align: center;
 }
-/*CARRUSEL*/
-.carousel{
-    width: 70%;
-    margin: 50px auto;
-}
-.carousel-item img{
-    max-height: 500px;
-    width: auto;
-    border-radius: 50px;
-    opacity: 0.3;
-}
-.carousel-caption{
-    color: #1C6758;
-}
-.carousel-caption h2{
-    font-size: 60px;
-    font-weight: 800;
-}
-.carousel-caption p{
-    font-size: 40px;
-}
+/* MAS COSAS POR HACER */
+
 /*PEDIDOS POR WA*/
 .bt-wa{
     background-color: #1C6758;
@@ -92,32 +73,77 @@ h3{
 }
 /*MENU*/
 .menu{
-    width: 80%;
     margin: 15px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 /*INFORMACION DEL PLATILLO*/
-.img-menu{
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.card-container {
+    flex: 1 0 20%;
+    max-width: 20%;
+    margin-bottom: 20px;
+}
+.card {
+    background-color: #EEF2E6;
+    border: 1px solid #1C6758;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    margin: 0 auto;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.img-menu {
+    width: 100%;
     height: 150px;
-    max-width: 180px;
-    border-radius: 20px;
-    border: 2px solid #1C6758;
+    object-fit: cover;
+    border-radius: 10px;
 }
-.info{
-    padding-left: 10px;
-}
-.nombre{
-    text-align: left;
+.card-title {
+    font-size: 1.25em;
     font-weight: bold;
     color: #1C6758;
+    margin-top: 10px;
 }
-.descripcion{
-    text-align: left;
-}
-.precio{
-    text-align: left;
-    font-weight: bold;
+.card-text {
     color: #FF6600;
+    font-weight: bold;
 }
+.card-description {
+    margin-top: 10px;
+    color: #333;
+}
+.btn {
+    background-color: #1C6758;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.btn:hover {
+    background-color: #145943;
+}
+.btn-close {
+    background-color: #FF6600;
+}
+.btn-close:hover {
+    background-color: #CC5200;
+}
+
 /*FORMULARIO PARA AGREGAR UN COMENTARIO*/
 .form-comentario{
     width: 400px;
@@ -177,16 +203,23 @@ h3{
 /*CHATBOT*/
 .chatbot{
     display: none;
+    position: fixed;
+    bottom: 80px; /* Ajusta esta distancia según sea necesario */
+    left: 10px; /* Ajusta esta distancia según sea necesario */
+    z-index: 1000; /* Asegúrate de que este z-index sea mayor que el del botón */
+    border: 2px solid #1C6758;
+    border-radius: 10px;
+    background-color: white;
 }
 .chatbot-bt{
     padding: 10px;
     background-color: #EEF2E6;
     border: 2px solid #1C6758;
     border-radius: 10px;
-    position: fixed; /* Establece la posición fija en la ventana del navegador */
-    bottom: 10px; /* Coloca el botón 20px desde la parte inferior */
-    left: 10px; /* Coloca el botón 20px desde el borde izquierdo */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    cursor: pointer;
     z-index: 999;
 }
 

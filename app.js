@@ -123,21 +123,35 @@ app.get('/procreate', sessionChecker, (req, res)=>{
 app.get('/proedit', sessionChecker, (req, res)=>{
 	res.render('proedit',{login:true});
 });
-//ADMINISTRACION DE LOS MENUS
-app.get('/menus', sessionChecker, (req, res)=>{
-	let categoria = req.query.categoria || 'todos';
-	categoria = categoria.toUpperCase();
-	let query = 'SELECT * FROM platillos';
-	if (categoria !== 'TODOS'){
-		query += ' WHERE categoria = ?';
-	}
-	//PARA VER LA CONSULTA EN LA CONSOLA
-	//console.log("Consulta SQL:", query);
-	connection.query(query, [categoria], (error, results)=>{
+//ADMINISTRACION DE LOS PEDIDOS
+app.get('/pedidos', sessionChecker, (req, res)=>{
+	connection.query('SELECT *, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha FROM pedidos', (error, results)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('menus', {results:results,login:true});
+			res.render('pedidos', {results:results,login:true});
+		}
+	});
+});
+//VISUALIZAR INFORMACION DE UN PEDIDO
+app.get('/pedido_detalles/:pedidoId', sessionChecker, (req, res) => {
+	const pedidoId = req.params.pedidoId;
+	connection.query('SELECT * FROM pedido_detalles WHERE pedido_id = ?', [pedidoId], (error, results) => {
+	  if (error) {
+		console.log(error);
+		res.status(500).json({ error: 'Internal Server Error' });
+	  } else {
+		res.json(results);
+	  }
+	});
+});
+//NUEVO PEDIDO
+app.get('/npedido', sessionChecker, (req, res)=>{
+	connection.query('SELECT * FROM platillos WHERE visible = "SÍ"', (error, results)=>{
+		if(error){
+			console.log(error);
+		}else{
+			res.render('npedido', {results:results,login:true});
 		}
 	});
 });
@@ -175,7 +189,7 @@ app.get('/menu', (req, res)=>{
 			  console.log(error3);
 			}
 			bebidas = results3;
-			res.render('menu', { desayunos: desayunos, comidas: comidas, babidas:bebidas });
+			res.render('menu', { desayunos: desayunos, comidas: comidas, bebidas:bebidas });
 			});
 	  	});
 	});
@@ -421,6 +435,43 @@ app.get('/borcomen/:id', (req, res)=>{
             }else{
                 res.redirect('/vercomen');
         }
+	});
+});
+//GUARDADO DE LOS PEDIDOS
+app.post('/finalizar-pedido', (req, res) => {
+	const pedido = req.body.pedido;
+  
+	// Calcular el total del pedido
+	const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0);
+  
+	// Generar número de pedido
+	connection.query('SELECT MAX(id) as maxId FROM pedidos', (error, results) => {
+	  if (error) {
+		console.log(error);
+		res.json({ success: false });
+	  } else {
+		let pedidoId = results[0].maxId ? results[0].maxId + 1 : 1;
+		pedidoId = String(pedidoId).padStart(5, '0'); // Formatear a 5 dígitos
+  
+		// Insertar el pedido en la tabla 'pedidos'
+		connection.query('INSERT INTO pedidos (pedido_id, fecha, total) VALUES (?, CURDATE(), ?)', [pedidoId, total], (error, results) => {
+		  if (error) {
+			console.log(error);
+			res.json({ success: false });
+		  } else {
+			// Preparar los valores para insertar en 'pedido_detalles'
+			const pedidoDetallesValues = pedido.map(p => [pedidoId, p.id, p.nombre, p.precio, p.cantidad]);
+			connection.query('INSERT INTO pedido_detalles (pedido_id, platillo_id, nombre, precio, cantidad) VALUES ?', [pedidoDetallesValues], (error, results) => {
+			  if (error) {
+				console.log(error);
+				res.json({ success: false });
+			  } else {
+				res.json({ success: true, pedido_id: pedidoId });
+			  }
+			});
+		  }
+		});
+	  }
 	});
 });
 

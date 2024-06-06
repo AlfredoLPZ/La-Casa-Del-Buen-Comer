@@ -17,7 +17,9 @@ a{
     width: 90%;
     margin: 50px auto;
 }
-
+.row{
+    margin-top: 20px;
+}
 /*MENU*/
 .menu-admin{
     width: 100%;
@@ -41,7 +43,6 @@ a{
     padding: 10px;
     font-size: 30px;
 }
-
 /*FORMULARIOS*/
 .form{
     width: 600px;
@@ -110,7 +111,53 @@ a{
     border: 2px solid #04364A;
     border-radius: 5px;
 }
-
+/*ADMINISTRACION DE PEDIDOS*/
+.i-pedido{
+    height: 600px;
+    overflow-y: auto;
+    border: 2px solid #04364A;
+    border-radius: 10px;
+    padding: 10px;
+}
+.i-pedido::-webkit-scrollbar{
+    width: 10px;
+}
+.i-pedido::-webkit-scrollbar-thumb{
+    background-color: #04364A;
+    border-radius: 5px;
+}
+.n-pedido{
+    height: 500px;
+    overflow-y: auto;
+    border: 2px solid #04364A;
+    border-radius: 10px;
+    padding: 10px;
+}
+.n-pedido::-webkit-scrollbar{
+    width: 10px;
+}
+.n-pedido::-webkit-scrollbar-thumb{
+    background-color: #04364A;
+    border-radius: 5px;
+}
+.t-pedido{
+    margin-top: 20px;
+    height: 80px;
+    border: 2px solid #04364A;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+}
+.t-pedido p {
+    font-weight: bold;
+    margin: 0; /* Elimina el margen por defecto de los párrafos */
+}
+.t-pedido span{
+    color: #FF0060;
+}
 /*BOTONES*/
 .bt-form-a{
     width: 50%;
@@ -234,4 +281,81 @@ a{
 .amarillo:active, .amarillo:hover{
     background-color: #FFFFFF;
     color: #F6FA70;
+}
+/*BOTONES PARA PEDIDOS*/
+.ver{
+    color: #04364A;
+    border: 1px solid #04364A;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin: -2px;
+}
+.ver:active, .ver:hover{
+    background-color: #04364A;
+    color: #FFFFFF;
+}
+.add-to-cart{
+    color: #04364A;
+    border: 1px solid #04364A;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin: -2px;
+}
+.add-to-cart:active, .add-to-cart:hover{
+    background-color: #04364A;
+    color: #FFFFFF;
+}
+.decrement{
+    background-color: #FF0060;
+    color: #FFFFFF;
+    border: 1px solid #FF0060;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin: -2px 5px -2px 0px;
+}
+.decrement:active, .decrement:hover{
+    background-color: #FFFFFF;
+    color: #FF0060;
+}
+.increment{
+    background-color: #0079FF;
+    color: #FFFFFF;
+    border: 1px solid #0079FF;
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin: -2px 0px -2px 5px;
+}
+.increment:active, .increment:hover{
+    background-color: #FFFFFF;
+    color: #0079FF;
+}
+.t-pedido button{
+    color: #04364A;
+    border: 1px solid #04364A;
+    border-radius: 5px;
+    padding: 2px 10px;
+}
+.t-pedido button:active, .t-pedido button:hover{
+    background-color: #04364A;
+    color: #FFFFFF;
+}
+/*NOTIFICACION*/
+#notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #04364A;
+    color: #FFFFFF;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: opacity 0.5s;
+}
+#notification.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+#notification.show {
+    opacity: 1;
+    visibility: visible;
 }
