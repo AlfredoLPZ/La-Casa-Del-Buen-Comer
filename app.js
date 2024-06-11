@@ -1,8 +1,8 @@
 /*
 Arrancar el proyecto: nodemon app (en terminal del vsc)
-modulos: npm i express express-session mysql ejs dotenv bcryptjs multer
+dependecnias: npm i bcryptjs dotenv ejs express-session express multer mysql
 instalar nodemon: npm install -g nodemon
-saber que modulos estan instalados: npm ls --prod
+saber que dependencias estan instaladas: npm ls --prod
 saber la version de nodemon: nodemon --version
 Error con node: set-executionpolicy unrestricted -force (en powershell administrador)
 phpMyAdmin: http://localhost/phpmyadmin/
@@ -69,7 +69,7 @@ const sessionChecker = (req, res, next)=>{
 };
 
 //ESTABLACER RUTAS PARA EL SISTEMA
-//INICIO DEL SISTEMA (IR AL SISTEMA O PAGINA?)
+//INICIO DEL SISTEMA (¿IR AL SISTEMA O PAGINA?)
 app.get('/', (req, res)=>{
 	if (req.session.loggedin) {
 		res.render('index',{
@@ -440,26 +440,23 @@ app.get('/borcomen/:id', (req, res)=>{
 //GUARDADO DE LOS PEDIDOS
 app.post('/finalizar-pedido', (req, res) => {
 	const pedido = req.body.pedido;
-  
-	// Calcular el total del pedido
-	const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0);
-  
-	// Generar número de pedido
+	//CALCULAR EL TOTAL DEL PEDIDO
+	const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0); 
+	//GENERAR NUMERO DE PEDIDO
 	connection.query('SELECT MAX(id) as maxId FROM pedidos', (error, results) => {
 	  if (error) {
 		console.log(error);
 		res.json({ success: false });
 	  } else {
 		let pedidoId = results[0].maxId ? results[0].maxId + 1 : 1;
-		pedidoId = String(pedidoId).padStart(5, '0'); // Formatear a 5 dígitos
-  
-		// Insertar el pedido en la tabla 'pedidos'
+		pedidoId = String(pedidoId).padStart(5, '0'); //FORMATO A 5 DIGITOS
+		//INSERTAR EL PEDIDO EN LA TABLA "pedido"
 		connection.query('INSERT INTO pedidos (pedido_id, fecha, total) VALUES (?, CURDATE(), ?)', [pedidoId, total], (error, results) => {
 		  if (error) {
 			console.log(error);
 			res.json({ success: false });
 		  } else {
-			// Preparar los valores para insertar en 'pedido_detalles'
+			//PREPARA LOS VALORES PARA INSERTAR EN LA TABLA 'pedido_detalles'
 			const pedidoDetallesValues = pedido.map(p => [pedidoId, p.id, p.nombre, p.precio, p.cantidad]);
 			connection.query('INSERT INTO pedido_detalles (pedido_id, platillo_id, nombre, precio, cantidad) VALUES ?', [pedidoDetallesValues], (error, results) => {
 			  if (error) {

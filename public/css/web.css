@@ -54,7 +54,11 @@ h3{
     margin: 120px auto 50px auto;
     text-align: center;
 }
-/* MAS COSAS POR HACER */
+/* 
+
+PARA COMPLETAR LA PAGINA DE INICIO
+
+*/
 
 /*PEDIDOS POR WA*/
 .bt-wa{
@@ -143,7 +147,6 @@ h3{
 .btn-close:hover {
     background-color: #CC5200;
 }
-
 /*FORMULARIO PARA AGREGAR UN COMENTARIO*/
 .form-comentario{
     width: 400px;
@@ -288,18 +291,46 @@ DISEÑO RESPONSIVO DE LA PAGINA WEB
     .menu-img img{
         width: auto;
     }
-    /*CARRUSEL*/
-    .carousel{
-        width: auto;
-        margin: 25px auto;
+    /* 
+
+    PARA COMPLETAR LA PAGINA DE INICIO
+
+    */
+
+    /*COLUMNAS*/
+    .col-8{
+        width: 100%;
     }
-    .carousel-item img{
-        height: 100%;
-        border-radius: 20px;
+    .col-4{
+        width: 100%;
     }
     /*PEDIDOS POR WA*/
     .img-wa{
         display: none;
+    }
+    /*TARJETAS DE LOS PLATILLOS*/
+    .card-container {
+        flex: 1 0 100%;
+        max-width: 100%;
+    }
+    .card {
+        padding: 5px;
+        margin: 10px auto;
+    }
+    .img-menu {
+        height: 100px;
+    }
+    .card-title {
+        font-size: 30px;
+    }
+    .card-text {
+        font-size: 25px;
+        margin-bottom: 0;
+    }
+    .btn {
+        padding: 5px 10px;
+        font-size: 0.9em;
+        margin-top: 5px;
     }
     /*COMENTARIOS*/
     .form-comentario label{
@@ -328,4 +359,5 @@ DISEÑO RESPONSIVO DE LA PAGINA WEB
         height: 50px;
         width: auto;
     }
+    
 }
