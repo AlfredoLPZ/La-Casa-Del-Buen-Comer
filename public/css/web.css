@@ -54,12 +54,23 @@ h3{
     margin: 120px auto 50px auto;
     text-align: center;
 }
-/* 
-
-PARA COMPLETAR LA PAGINA DE INICIO
-
-*/
-
+/*INFORMACION DE LA FONDA*/
+.info-fonda{
+    width: 50%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #145943;
+    color: #D6CDA4;
+}
+.info-fonda h1{
+    font-size: 50px;
+    text-decoration: underline;
+    padding-bottom: 20px;
+}
+.info-fonda p{
+    font-size: 40px;
+}
 /*PEDIDOS POR WA*/
 .bt-wa{
     background-color: #1C6758;
@@ -225,7 +236,6 @@ PARA COMPLETAR LA PAGINA DE INICIO
     cursor: pointer;
     z-index: 999;
 }
-
 /*FOOTER*/
 footer{
     color: #D6CDA4;
@@ -254,6 +264,7 @@ footer a{
 DISEÑO RESPONSIVO DE LA PAGINA WEB
 (MEDIA QUERY)
 */
+
 @media (max-width: 500px){
     /*GLOBAL*/
     body{
@@ -291,17 +302,27 @@ DISEÑO RESPONSIVO DE LA PAGINA WEB
     .menu-img img{
         width: auto;
     }
-    /* 
-
-    PARA COMPLETAR LA PAGINA DE INICIO
-
-    */
-
-    /*COLUMNAS*/
-    .col-8{
+    /*INFORMACION DE LA FONDA*/
+    .info-fonda{
         width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .info-fonda h1{
+        font-size: 30px;
+    }
+    .info-fonda p{
+        font-size: 20px;
+    }
+    /*COLUMNAS*/
+    .col {
+        width: 100%;
+        margin-bottom: 1rem; /* Esto añade un poco de espacio entre las columnas */
     }
     .col-4{
+        width: 100%;
+    } 
+    .col-8{
         width: 100%;
     }
     /*PEDIDOS POR WA*/
