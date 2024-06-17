@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+  <!-- JSPDF -->
   <!-- -->
   <link rel="stylesheet" href="resources/css/sistema.css">
   <title>PEDIDOS</title>
@@ -20,50 +21,65 @@
     <!-- HISTORIAL DE LOS PEDIDOS -->
     <div class="row">
       <!-- TABLA CON LOS PEDIDOS -->
-      <div class="col-3">
+      <div class="col-4">
         <h1>TODOS LOS PEDIDOS</h1>
         <table id="myTable" class="display table">
           <thead>
             <tr>
-              <th scope="col">PEDIDO ID</th>
+              <th scope="col">ID</th>
               <th scope="col">FECHA</th>
               <th scope="col">TOTAL</th>
-              <th scope="col">VER</th>
+              <th scope="col">STATUS</th>
+              <th scope="col">OPCIONES</th>
             </tr>
           </thead>
           <tbody>
             <% results.forEach((pedido)=>{ %>
-            <tr>
-              <td><%= pedido.pedido_id %></td>
-              <td><%= pedido.fecha %></td>
-              <td>$<%= pedido.total %></td>
-              <td>
-                <button class="ver" data-pedido-id="<%= pedido.pedido_id %>">VER</button>
-              </td>
-            </tr>
+              <tr>
+                <td><%= pedido.pedido_id %></td>
+                <td><%= pedido.fecha %></td>
+                <td>$<%= pedido.total %></td>
+                <td>
+                  <!-- SELECT PARA CAMBIAR EL STATUS DEL PEDIDO -->
+                  <select class="select-status" onchange="changeStatus(<%= pedido.id %>, this.value)" style="margin: 0;">
+                    <option value="Pendiente" <% if (pedido.status === 'Pendiente') { %> selected <% } %>>PENDIENTE</option>
+                    <option value="Listo" <% if (pedido.status === 'Listo') { %> selected <% } %>>LISTO</option>
+                  </select>
+                </td>
+                <td>
+                  <button class="ver" data-pedido-id="<%= pedido.pedido_id %>">VER</button>
+                  <button class="ticket" data-pedido-id="<%= pedido.pedido_id %>">
+                    <img src="resources/css/imgs/imprimir.png" alt="IMPRIMIR">
+                  </button>
+                </td>
+              </tr>
             <% }) %>
           </tbody>
         </table>
       </div>
       <!-- SECCION PARA VER LA INFORMACION DEL PEDIDO -->
-      <div class="col-9">
+      <div class="col-8">
         <h1>INFORMACION DEL PEDIDO</h1>
         <!-- PLATILLOS DENTRO DEL PEDIDO -->
         <div class="i-pedido">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">PEDIDO ID</th>
-                    <th scope="col">PLATILLO ID</th>
-                    <th scope="col">NOMBRE</th>
-                    <th scope="col">PRECIO</th>
-                    <th scope="col">CANTIDAD</th>
-                </tr>
-                </thead>
-                <tbody id="detallePedido">
-                
-                </tbody>
-            </table>
+          <table class="table">
+              <thead>
+              <tr>
+                  <th scope="col">PEDIDO ID</th>
+                  <th scope="col">PLATILLO ID</th>
+                  <th scope="col">NOMBRE</th>
+                  <th scope="col">PRECIO</th>
+                  <th scope="col">CANTIDAD</th>
+              </tr>
+              </thead>
+              <tbody id="detallePedido">
+              
+              </tbody>
+          </table>
+        </div>
+        <!-- NOTA DEL PEDIDO -->
+        <div class="nota-pedido">
+          <p>NOTA: <span></span></p>
         </div>
       </div>
     </div>
@@ -73,36 +89,109 @@
   <script>
     $(document).ready(function(){
         $('#myTable').DataTable({
-            "language":{"url":"/resources/es-MX.json"}
+            "language":{"url":"/resources/es-MX.json"},
+            "order":[[0,"desc"]]
         });
     });
+  </script>
+  <!-- STATUS DEL PEDIDO -->
+  <script>
+    function changeStatus(pedidoId, status) {
+      fetch(`/updateStatus/${pedidoId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: status })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al cambiar la visibilidad');
+        }
+        // Actualizar la interfaz de usuario si es necesario
+        // Por ejemplo, cambiar el color del elemento según la visibilidad
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
   </script>
   <!-- SCRIPT PARA VISUALIZAR LA INFROMACION DE UN PEDIDO -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.ver').forEach(button => {
-            button.addEventListener('click', function() {
-            const pedidoId = this.getAttribute('data-pedido-id');
-            fetch(`/pedido_detalles/${pedidoId}`)
-                .then(response => response.json())
-                .then(data => {
-                const tbody = document.getElementById('detallePedido');
-                tbody.innerHTML = '';
-                data.forEach(detalle => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                    <td>${detalle.pedido_id}</td>
-                    <td>${detalle.platillo_id}</td>
-                    <td>${detalle.nombre}</td>
-                    <td>$${detalle.precio}</td>
-                    <td>${detalle.cantidad}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                })
-                .catch(error => console.error('Error fetching details:', error));
-            });
+      document.querySelectorAll('.ver').forEach(button => {
+        button.addEventListener('click', function() {
+          const pedidoId = this.getAttribute('data-pedido-id');
+          fetch(`/pedido_detalles/${pedidoId}`)
+            .then(response => response.json())
+            .then(data => {
+              const tbody = document.getElementById('detallePedido');
+              tbody.innerHTML = '';
+              data.detalles.forEach(detalle => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                  <td>${detalle.pedido_id}</td>
+                  <td>${detalle.platillo_id}</td>
+                  <td>${detalle.nombre}</td>
+                  <td>$${detalle.precio}</td>
+                  <td>${detalle.cantidad}</td>
+                `;
+                tbody.appendChild(row);
+              });
+  
+              // Mostrar la nota del pedido
+              const notaPedidoElement = document.querySelector('.nota-pedido span');
+              notaPedidoElement.textContent = `${data.nota}`;
+            })
+            .catch(error => console.error('Error fetching details:', error));
         });
+      });
+  
+      document.querySelectorAll('.ticket').forEach(button => {
+        button.addEventListener('click', function() {
+          const pedidoId = this.getAttribute('data-pedido-id');
+          window.location.href = `/imprimir_pedido/${pedidoId}`;
+        });
+      });
+    });
+  </script>
+  <!-- SCRIPT PARA GENERAR EL PDF CON LA INFORMACION DEL PEDIDO -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.ticket').forEach(button => {
+        button.addEventListener('click', function() {
+          const pedidoId = this.getAttribute('data-pedido-id');
+          fetch(`/pedido_detalles/${pedidoId}`)
+            .then(response => response.json())
+            .then(data => {
+              const doc = new PDFDocument();
+              let filename = `pedido_${pedidoId}.pdf`;
+              filename = encodeURIComponent(filename);
+              res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+              res.setHeader('Content-type', 'application/pdf');
+              doc.pipe(res);
+  
+              doc.fontSize(25).text(`Detalles del Pedido ${pedidoId}`, {
+                align: 'center'
+              });
+  
+              doc.moveDown();
+              doc.fontSize(12);
+              data.detalles.forEach(detalle => {
+                doc.text(`Platillo ID: ${detalle.platillo_id}`);
+                doc.text(`Nombre: ${detalle.nombre}`);
+                doc.text(`Cantidad: ${detalle.cantidad}`);
+                doc.moveDown();
+              });
+  
+              // Agregar la nota al PDF
+              doc.text(`NOTA: ${data.nota}`);
+  
+              doc.end();
+            })
+            .catch(error => console.error('Error fetching details:', error));
+        });
+      });
     });
   </script>
 </body>

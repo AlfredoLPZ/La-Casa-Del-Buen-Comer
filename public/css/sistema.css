@@ -11,11 +11,10 @@ a{
     text-decoration: none
 }
 
-/*ADMINISTRADOR*/
 /*INDEX*/
 .index{
     width: 90%;
-    margin: 50px auto;
+    margin: 25px auto;
 }
 .row{
     margin-top: 20px;
@@ -113,7 +112,7 @@ a{
 }
 /*ADMINISTRACION DE PEDIDOS*/
 .i-pedido{
-    height: 600px;
+    height: 500px;
     overflow-y: auto;
     border: 2px solid #04364A;
     border-radius: 10px;
@@ -126,8 +125,23 @@ a{
     background-color: #04364A;
     border-radius: 5px;
 }
+.nota-pedido{
+    margin-top: 10px;
+    height: 100px;
+    border: 2px solid #04364A;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: left;
+    gap: 10px;
+    font-weight: bold;
+    color: #FF0060;
+}
+.nota-pedido span{
+    color: #04364A;
+}
 .n-pedido{
-    height: 500px;
+    height: 430px;
     overflow-y: auto;
     border: 2px solid #04364A;
     border-radius: 10px;
@@ -140,9 +154,37 @@ a{
     background-color: #04364A;
     border-radius: 5px;
 }
+.nueva-nota-pedido{
+    margin-top: 10px;
+    height: 100px;
+    border: 2px solid #04364A;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: left;
+    gap: 10px;
+    font-weight: bold;
+}
+.nueva-nota-pedido textarea {
+    flex: 1; /* Ocupa todo el espacio restante */
+    height: 100%; /* Altura completa */
+    border: 1px solid #04364A;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    resize: vertical; /* Permitir redimensionar verticalmente */
+}
+/* Cambiar el borde del textarea cuando está enfocado */
+.nueva-nota-pedido textarea:focus {
+    border-color: #1E90FF; /* Cambiar a un color más llamativo */
+}
+/* Estilo opcional para el label cuando el textarea está enfocado */
+.nueva-nota-pedido textarea:focus + label {
+    color: #1E90FF; /* Cambiar color del label cuando textarea está enfocado */
+}
 .t-pedido{
-    margin-top: 20px;
-    height: 80px;
+    margin-top: 10px;
+    height: 50px;
     border: 2px solid #04364A;
     border-radius: 10px;
     padding: 10px;
@@ -285,14 +327,24 @@ a{
 /*BOTONES PARA PEDIDOS*/
 .ver{
     color: #04364A;
-    border: 1px solid #04364A;
+    border: none;
     border-radius: 5px;
-    padding: 2px 10px;
-    margin: -2px;
+    padding: 2px 5px;
+    margin: -2px 10px -2px 0px;
 }
 .ver:active, .ver:hover{
     background-color: #04364A;
     color: #FFFFFF;
+}
+.ticket{
+    border: none;
+    padding: 2px 5px;
+    margin: -2px;
+}
+.ticket img{
+    border-radius: 5px;
+    max-height: 25px;
+    width: auto;
 }
 .add-to-cart{
     color: #04364A;

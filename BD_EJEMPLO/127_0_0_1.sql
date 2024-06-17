@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2024 a las 20:44:38
+-- Tiempo de generación: 16-06-2024 a las 22:05:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.1.25
 
@@ -65,27 +65,33 @@ CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
   `pedido_id` varchar(5) NOT NULL,
   `fecha` date DEFAULT NULL,
-  `total` decimal(10,2) DEFAULT NULL
+  `total` decimal(10,2) DEFAULT NULL,
+  `status` varchar(20) NOT NULL,
+  `nota` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `pedido_id`, `fecha`, `total`) VALUES
-(1, '00001', '2024-06-05', 245.00),
-(2, '00002', '2024-06-05', 200.00),
-(3, '00003', '2024-06-05', 200.00),
-(4, '00004', '2024-06-05', 200.00),
-(5, '00005', '2024-06-05', 200.00),
-(6, '00006', '2024-06-05', 115.00),
-(7, '00007', '2024-06-05', 200.00),
-(8, '00008', '2024-06-05', 85.00),
-(9, '00009', '2024-06-05', 115.00),
-(10, '00010', '2024-06-05', 160.00),
-(11, '00011', '2024-06-05', 45.00),
-(12, '00012', '2024-06-05', 165.00),
-(13, '00013', '2024-06-05', 335.00);
+INSERT INTO `pedidos` (`id`, `pedido_id`, `fecha`, `total`, `status`, `nota`) VALUES
+(1, '00001', '2024-06-05', 245.00, 'Listo', 'nota temporal'),
+(2, '00002', '2024-06-05', 200.00, 'Listo', 'nota temporal'),
+(3, '00003', '2024-06-05', 200.00, 'Listo', 'nota temporal'),
+(4, '00004', '2024-06-05', 200.00, 'Listo', 'nota temporal'),
+(5, '00005', '2024-06-05', 200.00, 'Listo', 'nota temporal'),
+(6, '00006', '2024-06-05', 115.00, 'Listo', 'nota temporal'),
+(7, '00007', '2024-06-05', 200.00, 'Listo', 'nota temporal'),
+(8, '00008', '2024-06-05', 85.00, 'Listo', 'nota temporal'),
+(9, '00009', '2024-06-05', 115.00, 'Listo', 'nota temporal'),
+(10, '00010', '2024-06-05', 160.00, 'Listo', 'nota temporal'),
+(11, '00011', '2024-06-05', 45.00, 'Listo', 'nota temporal'),
+(12, '00012', '2024-06-05', 165.00, 'Listo', 'nota temporal'),
+(13, '00013', '2024-06-05', 335.00, 'Listo', 'nota temporal'),
+(14, '00014', '2024-06-16', 115.00, 'Listo', 'nota temporal'),
+(15, '00015', '2024-06-16', 165.00, 'Listo', 'los molletes van sin cebolla'),
+(16, '00016', '2024-06-16', 120.00, '', 'Uno de los pozoles no lleva lechuga'),
+(17, '00017', '2024-06-16', 65.00, '', 'El café va sin azúcar');
 
 -- --------------------------------------------------------
 
@@ -145,7 +151,14 @@ INSERT INTO `pedido_detalles` (`id`, `pedido_id`, `platillo_id`, `nombre`, `prec
 (36, '00013', 1, 'Huevos Rancheros', 45.00, 3),
 (37, '00013', 3, 'Molletes', 30.00, 2),
 (38, '00013', 5, 'Tacos Dorados', 45.00, 2),
-(39, '00013', 8, 'Chiles Rellenos', 50.00, 1);
+(39, '00013', 8, 'Chiles Rellenos', 50.00, 1),
+(40, '00015', 1, 'Huevos Rancheros', 45.00, 1),
+(41, '00015', 2, 'Chilaquiles Verdes', 40.00, 1),
+(42, '00015', 3, 'Molletes', 30.00, 1),
+(43, '00015', 4, 'Enfrijoladas', 50.00, 1),
+(44, '00016', 6, 'Pozole', 60.00, 2),
+(45, '00017', 17, 'Café de Olla', 20.00, 1),
+(46, '00017', 5, 'Tacos Dorados', 45.00, 1);
 
 -- --------------------------------------------------------
 
@@ -196,6 +209,7 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `user` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `role` varchar(50) NOT NULL,
   `pass` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -203,13 +217,15 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `user`, `name`, `pass`) VALUES
-(3, 'admin', 'alfredo lopez', '$2a$08$/16wZHNM/X4ZTWIs0pptp.vEwwpBDkC6MqIro5BWzczaIyiALEtTy'),
-(7, 'ultimo', 'el ultimo usuario creado', '$2a$08$AwluiRcmPSLjEY.Wlg0BU.jZ2XGm21.l94oLXlEGpEGNVG9DMeboW'),
-(9, 'alfredo', 'alfredo lopez segovia', '$2a$08$bO7DuOaAKSIAibqA4KqVieTn4cwCVNPOHuP64LHkDRNA6CSAS1C0C'),
-(11, 'CGJJ', 'Chavez Garduño Jose de Jesus', '$2a$08$TTxhn3iNMlg9PAqIxA1Ar.XjNK9DgKU06ytvDpwmDCAw4qbbA/19u'),
-(12, 'carlos', 'mendoza carlos', '$2a$08$m0IClwTvmoJIbbw86IzkpOM0IchcqReY8T2ZaUkIiYrNkAkX62EFW'),
-(15, 'juanito', 'juan garcia', '$2a$08$da.4UxxHB4LqXPGCtSDDkeWy0yd7typukOyR3rEeg9GwwMjtw5JRy');
+INSERT INTO `usuarios` (`id`, `user`, `name`, `role`, `pass`) VALUES
+(3, 'admin', 'alfredo lopez', 'ADMINISTRADOR', '$2a$08$/16wZHNM/X4ZTWIs0pptp.vEwwpBDkC6MqIro5BWzczaIyiALEtTy'),
+(7, 'ultimo', 'el ultimo usuario creado', 'ADMINISTRADOR', '$2a$08$AwluiRcmPSLjEY.Wlg0BU.jZ2XGm21.l94oLXlEGpEGNVG9DMeboW'),
+(9, 'alfredo', 'alfredo lopez segovia', 'CHEF', '$2a$08$bO7DuOaAKSIAibqA4KqVieTn4cwCVNPOHuP64LHkDRNA6CSAS1C0C'),
+(11, 'CGJJ', 'Chavez Garduño Jose de Jesus', 'CHEF', '$2a$08$TTxhn3iNMlg9PAqIxA1Ar.XjNK9DgKU06ytvDpwmDCAw4qbbA/19u'),
+(12, 'carlos', 'mendoza carlos', 'CHEF', '$2a$08$m0IClwTvmoJIbbw86IzkpOM0IchcqReY8T2ZaUkIiYrNkAkX62EFW'),
+(15, 'juanito', 'juan garcia', 'CHEF', '$2a$08$da.4UxxHB4LqXPGCtSDDkeWy0yd7typukOyR3rEeg9GwwMjtw5JRy'),
+(18, 'carlos', 'carlos mendoza', 'ADMINISTRADOR', '$2a$08$mLoEcbsnF6i4yt8FxJyqQuyKE084WaYfcxtdgmxhMEGnRum9cWIiu'),
+(19, 'chef', 'nuevo  chef', 'CHEF', '$2a$08$wpqLPKGFLt3psLXOasWTrOPxfLCvooyalIxNDTJzWooYOZAXMQ56u');
 
 --
 -- Índices para tablas volcadas
@@ -261,13 +277,13 @@ ALTER TABLE `comentarios`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `pedido_detalles`
 --
 ALTER TABLE `pedido_detalles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `platillos`
@@ -279,7 +295,7 @@ ALTER TABLE `platillos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas

@@ -1,6 +1,6 @@
 /*
 Arrancar el proyecto: nodemon app (en terminal del vsc)
-dependecnias: npm i bcryptjs dotenv ejs express-session express multer mysql
+dependecnias: npm i bcryptjs dotenv ejs express-session express multer mysql pdfkit
 instalar nodemon: npm install -g nodemon
 saber que dependencias estan instaladas: npm ls --prod
 saber la version de nodemon: nodemon --version
@@ -51,6 +51,9 @@ const connection = require('./database/db');
 const { render } = require('ejs');
 const { get } = require('http');
 
+//INVOCACION DE PDFKIT
+const PDFDocument = require('pdfkit');
+
 //VARIABLE DE SESION
 const session = require('express-session');
 app.use(session({
@@ -73,7 +76,9 @@ const sessionChecker = (req, res, next)=>{
 app.get('/', (req, res)=>{
 	if (req.session.loggedin) {
 		res.render('index',{
-			login: true,			
+			login: true,
+			name: req.session.name,
+			role: req.session.role 			
 		});		
 	} else {
 		res.render('index',{
@@ -125,24 +130,12 @@ app.get('/proedit', sessionChecker, (req, res)=>{
 });
 //ADMINISTRACION DE LOS PEDIDOS
 app.get('/pedidos', sessionChecker, (req, res)=>{
-	connection.query('SELECT *, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha FROM pedidos', (error, results)=>{
+	connection.query('SELECT *, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha FROM pedidos ORDER BY id DESC', (error, results)=>{
 		if(error){
 			console.log(error);
 		}else{
 			res.render('pedidos', {results:results,login:true});
 		}
-	});
-});
-//VISUALIZAR INFORMACION DE UN PEDIDO
-app.get('/pedido_detalles/:pedidoId', sessionChecker, (req, res) => {
-	const pedidoId = req.params.pedidoId;
-	connection.query('SELECT * FROM pedido_detalles WHERE pedido_id = ?', [pedidoId], (error, results) => {
-	  if (error) {
-		console.log(error);
-		res.status(500).json({ error: 'Internal Server Error' });
-	  } else {
-		res.json(results);
-	  }
 	});
 });
 //NUEVO PEDIDO
@@ -154,6 +147,76 @@ app.get('/npedido', sessionChecker, (req, res)=>{
 			res.render('npedido', {results:results,login:true});
 		}
 	});
+});
+//VISUALIZAR INFORMACION DE UN PEDIDO
+app.get('/pedido_detalles/:pedidoId', sessionChecker, (req, res) => {
+	const pedidoId = req.params.pedidoId;
+	connection.query('SELECT * FROM pedido_detalles WHERE pedido_id = ?', [pedidoId], (error, results) => {
+		if (error) {
+			console.log(error);
+			res.status(500).json({ error: 'Internal Server Error' });
+		} else {
+			// Obtener la nota del pedido
+			connection.query('SELECT nota FROM pedidos WHERE pedido_id = ?', [pedidoId], (error, notaResults) => {
+				if (error) {
+					console.log(error);
+					res.status(500).json({ error: 'Internal Server Error' });
+				} else {
+					const nota = notaResults.length > 0 ? notaResults[0].nota : '';
+					res.json({ detalles: results, nota: nota });
+				}
+			});
+		}
+	});
+});
+//GENERAR Y ENVIAR EL PDF
+app.get('/imprimir_pedido/:pedidoId', sessionChecker, (req, res) => {
+    const pedidoId = req.params.pedidoId;
+    // Consulta para obtener los detalles del pedido y la nota
+    connection.query('SELECT pd.*, p.nombre AS nombre_platillo, p.precio FROM pedido_detalles pd JOIN platillos p ON pd.platillo_id = p.id WHERE pd.pedido_id = ?', [pedidoId], (error, results) => {
+        if (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            // Consulta para obtener la nota del pedido
+            connection.query('SELECT nota FROM pedidos WHERE pedido_id = ?', [pedidoId], (error, notaResults) => {
+                if (error) {
+                    console.log(error);
+                    res.status(500).json({ error: 'Internal Server Error' });
+                } else {
+                    const nota = notaResults.length > 0 ? notaResults[0].nota : '';
+
+                    // Crear un documento PDF
+                    const doc = new PDFDocument();
+                    let filename = `pedido_${pedidoId}.pdf`;
+                    filename = encodeURIComponent(filename);
+                    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+                    res.setHeader('Content-type', 'application/pdf');
+                    doc.pipe(res);
+
+                    doc.fontSize(25).text(`Detalles del Pedido ${pedidoId}`, {
+                        align: 'center'
+                    });
+
+                    doc.moveDown();
+                    doc.fontSize(12);
+
+                    // Agregar detalles de los platillos al PDF
+                    results.forEach(detalle => {
+                        doc.text(`Platillo ID: ${detalle.platillo_id}`);
+                        doc.text(`Nombre: ${detalle.nombre_platillo}`);
+                        doc.text(`Cantidad: ${detalle.cantidad}`);
+                        doc.moveDown();
+                    });
+
+                    // Agregar la nota al final del PDF
+                    doc.text(`NOTA: ${nota}`);
+
+                    doc.end();
+                }
+            });
+        }
+    });
 });
 //VISUALISAR COMENTARIOS DE LOS CLIENTES
 app.get('/vercomen', sessionChecker, (req, res)=>{
@@ -210,9 +273,10 @@ app.get('/comentarios', (req, res)=>{
 app.post('/register', async (req, res)=>{
 	const user = req.body.user;
 	const name = req.body.name;
+	const role = req.body.role;
 	const pass = req.body.pass;
 	let passwordHash = await bcrypt.hash(pass, 8);
-    connection.query('INSERT INTO usuarios SET ?',{user:user, name:name, pass:passwordHash}, async (error, results)=>{
+    connection.query('INSERT INTO usuarios SET ?',{user:user, name:name, role:role, pass:passwordHash}, async (error, results)=>{
         if(error){
             console.log(error);
         }else{            
@@ -248,6 +312,7 @@ app.post('/auth', async (req, res)=>{
 			} else {        
 				req.session.loggedin = true;                
 				req.session.name = results[0].name;
+				req.session.role = results[0].role;
 				res.render('login', {
 					alert: true,
 					alertTitle: "CONEXION EXITOSA",
@@ -278,7 +343,8 @@ app.get('/index', (req, res)=>{
 	if (req.session.loggedin) {
 		res.render('index',{
 			login: true,
-			name: req.session.name			
+			name: req.session.name,
+			role: req.session.role			
 		});		
 	} else {
 		res.render('index',{
@@ -306,7 +372,8 @@ app.post('/emupdate', (req, res)=>{
     const id = req.body.id;
     const user = req.body.user;
     const name = req.body.name;
-    connection.query('UPDATE usuarios SET user=?, name=? WHERE id=?', [user, name, id], (error, results)=>{
+	const role = req.body.role;
+    connection.query('UPDATE usuarios SET user=?, name=?, role=? WHERE id=?', [user, name, role, id], (error, results)=>{
 		if(error){
 			console.log(error);
             }else{
@@ -439,36 +506,72 @@ app.get('/borcomen/:id', (req, res)=>{
 });
 //GUARDADO DE LOS PEDIDOS
 app.post('/finalizar-pedido', (req, res) => {
-	const pedido = req.body.pedido;
-	//CALCULAR EL TOTAL DEL PEDIDO
-	const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0); 
-	//GENERAR NUMERO DE PEDIDO
-	connection.query('SELECT MAX(id) as maxId FROM pedidos', (error, results) => {
-	  if (error) {
-		console.log(error);
-		res.json({ success: false });
-	  } else {
-		let pedidoId = results[0].maxId ? results[0].maxId + 1 : 1;
-		pedidoId = String(pedidoId).padStart(5, '0'); //FORMATO A 5 DIGITOS
-		//INSERTAR EL PEDIDO EN LA TABLA "pedido"
-		connection.query('INSERT INTO pedidos (pedido_id, fecha, total) VALUES (?, CURDATE(), ?)', [pedidoId, total], (error, results) => {
-		  if (error) {
-			console.log(error);
-			res.json({ success: false });
-		  } else {
-			//PREPARA LOS VALORES PARA INSERTAR EN LA TABLA 'pedido_detalles'
-			const pedidoDetallesValues = pedido.map(p => [pedidoId, p.id, p.nombre, p.precio, p.cantidad]);
-			connection.query('INSERT INTO pedido_detalles (pedido_id, platillo_id, nombre, precio, cantidad) VALUES ?', [pedidoDetallesValues], (error, results) => {
-			  if (error) {
-				console.log(error);
-				res.json({ success: false });
-			  } else {
-				res.json({ success: true, pedido_id: pedidoId });
-			  }
-			});
-		  }
-		});
-	  }
+    const { pedido, nota } = req.body;
+    //VALIDAR QUE EL PEDIDO TENGA AL MENOS UN PEDIDO
+    if (!pedido || pedido.length === 0) {
+        return res.json({ success: false, error: 'No se agregaron platillos al pedido.' });
+    }
+    //CALCULAR EL TOTAL DEL PEDIDO
+    const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0);
+    //GENERAR NUMERO DE PEDIDO
+    connection.query('SELECT MAX(id) as maxId FROM pedidos', (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.json({ success: false });
+        }
+        let pedidoId = results[0].maxId ? results[0].maxId + 1 : 1;
+        pedidoId = String(pedidoId).padStart(5, '0'); //FORMATO DE 5 DIGITOS
+        //ASEGURAR INTEGRIDAD DE LOS DATOS
+        connection.beginTransaction(function(err) {
+            if (err) { 
+                console.log(err);
+                return res.json({ success: false });
+            }
+            //INSERTAR PEDIDO EN LA TABLA "pedidos"
+            connection.query('INSERT INTO pedidos (pedido_id, fecha, total, nota) VALUES (?, CURDATE(), ?, ?)', [pedidoId, total, nota], (error, results) => {
+                if (error) {
+                    connection.rollback(function() {
+                        console.log(error);
+                        res.json({ success: false });
+                    });
+                } else {
+                    //INSERTAR VALORES EN LA TABLA 'pedido_detalles'
+                    const pedidoDetallesValues = pedido.map(p => [pedidoId, p.id, p.nombre, p.precio, p.cantidad]);
+                    connection.query('INSERT INTO pedido_detalles (pedido_id, platillo_id, nombre, precio, cantidad) VALUES ?', [pedidoDetallesValues], (error, results) => {
+                        if (error) {
+                            connection.rollback(function() {
+                                console.log(error);
+                                res.json({ success: false });
+                            });
+                        } else {
+                            connection.commit(function(err) {
+                                if (err) {
+                                    connection.rollback(function() {
+                                        console.log(err);
+                                        res.json({ success: false });
+                                    });
+                                } else {
+                                    res.json({ success: true, pedido_id: pedidoId });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+});
+//STATUS DE UN PEDIDO
+app.post('/updateStatus/:id', sessionChecker, (req, res)=>{
+	const pedidoId = req.params.id;
+	const status = req.body.status;
+	connection.query('UPDATE pedidos SET status = ? WHERE id = ?', [status, pedidoId], (error, results)=>{
+		if (error) {
+			console.error('Error al actualizar el status:', error);
+			res.status(500).send('Error al actualizar el status');
+		} else {
+			res.status(200).send('Status actualizado correctamente');
+		}
 	});
 });
 

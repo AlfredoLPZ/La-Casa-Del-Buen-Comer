@@ -45,7 +45,7 @@
           </tbody>
         </table>
       </div>
-      <!-- FORMULARIO PARA GENERAR UN PEDIDO -->
+      <!-- SECCION PARA GENERAR UN PEDIDO -->
       <div class="col-8">
         <h1>NUEVO PEDIDO</h1>
         <!-- PLATILLOS DENTRO DEL PEDIDO -->
@@ -64,7 +64,12 @@
             </tbody>
           </table>
         </div>
-        <!-- TOTAL DEL PEDIDO-->
+        <!-- NOTA DEL PEDIDO -->
+        <div class="nueva-nota-pedido">
+          <label for="nota">NOTA:</label>
+          <textarea name="nota" id="nota" rows="3"></textarea>
+        </div>
+        <!-- TOTAL DEL PEDIDO -->
         <div class="t-pedido">
           <p>TOTAL DE PLATILLOS: <span id="total-platillos">0</span></p>
           <p>TOTAL A PAGAR: <span id="total-cantidad">0</span></p>
@@ -185,6 +190,13 @@
       finalizarPedidoButton.addEventListener('click', function() {
         const carritoTable = document.querySelector('.table.carrito tbody');
         const rows = carritoTable.querySelectorAll('tr');
+        
+        // Verificar que haya al menos un platillo en el carrito
+        if (rows.length === 0) {
+          showNotification('Agrega al menos un platillo al pedido.');
+          return;
+        }
+
         let pedido = [];
 
         rows.forEach(row => {
@@ -195,19 +207,22 @@
           pedido.push({ id, nombre, precio, cantidad });
         });
 
-        // Enviar el pedido al servidor
+        // Obtener la nota del pedido
+        const notaPedido = document.getElementById('nota').value.trim();
+
+        // Enviar el pedido al servidor junto con la nota
         fetch('/finalizar-pedido', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ pedido }),
+          body: JSON.stringify({ pedido, nota: notaPedido }),
         })
         .then(response => response.json())
         .then(data => {
           if (data.success) {
             showNotification(`Pedido ${data.pedido_id} realizado con éxito!`);
-            // Limpiar el carrito
+            // Limpiar el carrito y actualizar totales
             carritoTable.innerHTML = '';
             updateTotals();
           } else {
