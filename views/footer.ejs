@@ -1,0 +1,39 @@
+<footer>
+    <h2>AQUI ESTAMOS</h2>
+    <div class="mapa" id="map">
+        <p>AGREGAR EL MAPA</p>
+    </div>
+    <div class="dir-con">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col direccion">
+                    <h3>DIRECCION</h3>
+                    <p>- Mocorito 53, Alvaro Obregon</p>
+                    <h3>HORARIO</h3>
+                    <p>- Lunes a Domingo de 09:00 a 18:00</p>
+                </div>
+                <div class="col contacto">
+                    <h3>CONTACTO</h3>
+                    <a href="https://www.facebook.com/" target="_blank"><img src="/resources/css/imgs/redes/facebook-96.png" alt=""></a>
+                    <a href="https://www.instagram.com/" target="_blank"><img src="/resources/css/imgs/redes/instagram-96.png" alt=""></a>
+                    <a href="https://mx.pinterest.com/" target="_blank"><img src="/resources/css/imgs/redes/pinterest-96.png" alt=""></a>
+                    <a href="https://www.tiktok.com/" target="_blank"><img src="/resources/css/imgs/redes/tiktok-96.png" alt=""></a>
+                    <a href="https://twitter.com/home" target="_blank"><img src="/resources/css/imgs/redes/twitterx-96.png" alt=""></a> 
+                    <a href="https://web.whatsapp.com/" target="_blank"><img src="/resources/css/imgs/redes/whatsapp-96.png" alt=""></a>
+                    <!--
+                    EDITAR ESTE SI SE QUIERE PONER UN NUMERO A DONDE RECIVIR MENSAJES
+                    <a href="https://wa.me/525500000000" target="_blank"><img src="/resources/css/imgs/redes/whatsapp-96.png" alt=""></a>
+                    -->
+                </div>
+            </div>
+        </div>    
+    </div>
+</footer>
+<!-- SCRIPT PARA PODER MOSTRAR LA UBICACION DEL RESTAURANTE EN EL MAPA -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([19.412728109303536, -99.11861673473321], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); //uso de OpenStreetMap como proveedor de mapas
+    var marker = L.marker([19.412728109303536, -99.11861673473321]).addTo(map);
+    marker.bindPopup("<b>¡Aquí estamos!</b>").openPopup();
+</script>
