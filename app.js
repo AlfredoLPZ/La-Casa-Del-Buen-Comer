@@ -71,26 +71,32 @@ const sessionChecker = (req, res, next)=>{
 	}
 };
 
-//ESTABLACER RUTAS PARA EL SISTEMA
-//INICIO DEL SISTEMA (¿IR AL SISTEMA O PAGINA?)
+//ESTABLACER RUTAS
+//RUTA INICIAL (¿IR AL SISTEMA O PAGINA?)
 app.get('/', (req, res)=>{
+		res.render('index');
+});
+
+//ADMINISTRADOR
+//INICIO DE SESION
+app.get('/login', (req, res)=>{
+	res.render('PaginaAdm/login');
+});
+//MENU INICIAL DEL ADMINISTRADOR
+app.get('/index', (req, res)=>{
 	if (req.session.loggedin) {
-		res.render('index',{
+		res.render('PaginaAdm/index',{
 			login: true,
 			name: req.session.name,
 			role: req.session.role 			
 		});		
 	} else {
-		res.render('index',{
+		res.render('PaginaAdm/index',{
 			login:false,
 			name:'DEBE INICIAR SESION',			
 		});				
 	}
 	res.end();
-});
-//INICIO DE SESION
-app.get('/login', (req, res)=>{
-	res.render('login');
 });
 //ADMINISTRACION DE USUARIO
 app.get('/emindex', sessionChecker, (req, res)=>{
@@ -98,17 +104,17 @@ app.get('/emindex', sessionChecker, (req, res)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('emindex', {results:results, login:true});
+			res.render('PaginaAdm/emindex', {results:results, login:true});
 		}
 	});
 });
 //REGISTRO DE UN NUEVO USUARIO
 app.get('/register', sessionChecker, (req, res)=>{
-	res.render('register', {login:true});
+	res.render('PaginaAdm/register', {login:true});
 });
 //EDITAR USUARIO
 app.get('/emedit', sessionChecker, (req, res)=>{
-	res.render('emedit',{login:true});
+	res.render('PaginaAdm/emedit',{login:true});
 });
 //ADMINISTRACION DE PLATILLOS
 app.get('/proindex', sessionChecker,(req, res)=>{
@@ -116,107 +122,17 @@ app.get('/proindex', sessionChecker,(req, res)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('proindex', {results:results,login:true});
+			res.render('PaginaAdm/proindex', {results:results,login:true});
 		}
 	});
 });
 //CREAR PLATILLO
 app.get('/procreate', sessionChecker, (req, res)=>{
-	res.render('procreate',{login:true});
+	res.render('PaginaAdm/procreate',{login:true});
 });
 //EDITAR PLATILLO
 app.get('/proedit', sessionChecker, (req, res)=>{
-	res.render('proedit',{login:true});
-});
-//ADMINISTRACION DE LOS PEDIDOS
-app.get('/pedidos', sessionChecker, (req, res)=>{
-	connection.query('SELECT *, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha FROM pedidos ORDER BY id DESC', (error, results)=>{
-		if(error){
-			console.log(error);
-		}else{
-			res.render('pedidos', {results:results,login:true});
-		}
-	});
-});
-//NUEVO PEDIDO
-app.get('/npedido', sessionChecker, (req, res)=>{
-	connection.query('SELECT * FROM platillos WHERE visible = "SÍ"', (error, results)=>{
-		if(error){
-			console.log(error);
-		}else{
-			res.render('npedido', {results:results,login:true});
-		}
-	});
-});
-//VISUALIZAR INFORMACION DE UN PEDIDO
-app.get('/pedido_detalles/:pedidoId', sessionChecker, (req, res) => {
-	const pedidoId = req.params.pedidoId;
-	connection.query('SELECT * FROM pedido_detalles WHERE pedido_id = ?', [pedidoId], (error, results) => {
-		if (error) {
-			console.log(error);
-			res.status(500).json({ error: 'Internal Server Error' });
-		} else {
-			// Obtener la nota del pedido
-			connection.query('SELECT nota FROM pedidos WHERE pedido_id = ?', [pedidoId], (error, notaResults) => {
-				if (error) {
-					console.log(error);
-					res.status(500).json({ error: 'Internal Server Error' });
-				} else {
-					const nota = notaResults.length > 0 ? notaResults[0].nota : '';
-					res.json({ detalles: results, nota: nota });
-				}
-			});
-		}
-	});
-});
-//GENERAR Y ENVIAR EL PDF
-app.get('/imprimir_pedido/:pedidoId', sessionChecker, (req, res) => {
-    const pedidoId = req.params.pedidoId;
-    // Consulta para obtener los detalles del pedido y la nota
-    connection.query('SELECT pd.*, p.nombre AS nombre_platillo, p.precio FROM pedido_detalles pd JOIN platillos p ON pd.platillo_id = p.id WHERE pd.pedido_id = ?', [pedidoId], (error, results) => {
-        if (error) {
-            console.log(error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-            // Consulta para obtener la nota del pedido
-            connection.query('SELECT nota FROM pedidos WHERE pedido_id = ?', [pedidoId], (error, notaResults) => {
-                if (error) {
-                    console.log(error);
-                    res.status(500).json({ error: 'Internal Server Error' });
-                } else {
-                    const nota = notaResults.length > 0 ? notaResults[0].nota : '';
-
-                    // Crear un documento PDF
-                    const doc = new PDFDocument();
-                    let filename = `pedido_${pedidoId}.pdf`;
-                    filename = encodeURIComponent(filename);
-                    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
-                    res.setHeader('Content-type', 'application/pdf');
-                    doc.pipe(res);
-
-                    doc.fontSize(25).text(`Detalles del Pedido ${pedidoId}`, {
-                        align: 'center'
-                    });
-
-                    doc.moveDown();
-                    doc.fontSize(12);
-
-                    // Agregar detalles de los platillos al PDF
-                    results.forEach(detalle => {
-                        doc.text(`Platillo ID: ${detalle.platillo_id}`);
-                        doc.text(`Nombre: ${detalle.nombre_platillo}`);
-                        doc.text(`Cantidad: ${detalle.cantidad}`);
-                        doc.moveDown();
-                    });
-
-                    // Agregar la nota al final del PDF
-                    doc.text(`NOTA: ${nota}`);
-
-                    doc.end();
-                }
-            });
-        }
-    });
+	res.render('PaginaAdm/proedit',{login:true});
 });
 //VISUALISAR COMENTARIOS DE LOS CLIENTES
 app.get('/vercomen', sessionChecker, (req, res)=>{
@@ -224,7 +140,7 @@ app.get('/vercomen', sessionChecker, (req, res)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('vercomen', {results:results,login:true});
+			res.render('PaginaAdm/vercomen', {results:results,login:true});
 		}
 	});
 });
@@ -232,7 +148,7 @@ app.get('/vercomen', sessionChecker, (req, res)=>{
 //ESTABLECER RUTAS PARA LA PAGINA WEB
 //PAGINA DE INICIO
 app.get('/inicio', (req, res)=>{
-	res.render('inicio')
+	res.render('PaginaWEB/inicio')
 });
 //PAGINA DEL MENU
 app.get('/menu', (req, res)=>{
@@ -252,7 +168,7 @@ app.get('/menu', (req, res)=>{
 			  console.log(error3);
 			}
 			bebidas = results3;
-			res.render('menu', { desayunos: desayunos, comidas: comidas, bebidas:bebidas });
+			res.render('PaginaWEB/menu', { desayunos: desayunos, comidas: comidas, bebidas:bebidas });
 			});
 	  	});
 	});
@@ -263,7 +179,7 @@ app.get('/comentarios', (req, res)=>{
 		if(error){
 			console.log(error);
 		}else{
-			res.render('comentarios', {results:results});
+			res.render('PaginaWEB/comentarios', {results:results});
 		}
 	});
 });
@@ -300,7 +216,7 @@ app.post('/auth', async (req, res)=>{
 	if (user && pass) {
 		connection.query('SELECT * FROM usuarios WHERE user = ?', [user], async (error, results, fields)=> {
 			if( results.length == 0 || !(await bcrypt.compare(pass, results[0].pass)) ) {    
-				res.render('login', {
+				res.render('PaginaAdm/login', {
 					alert: true,
 					alertTitle: "ERROR",
 					alertMessage: "USUARIO Y/O CONTRASEÑA INCORRECTO",
@@ -313,7 +229,7 @@ app.post('/auth', async (req, res)=>{
 				req.session.loggedin = true;                
 				req.session.name = results[0].name;
 				req.session.role = results[0].role;
-				res.render('login', {
+				res.render('PaginaAdm/login', {
 					alert: true,
 					alertTitle: "CONEXION EXITOSA",
 					alertMessage: "¡INICIO DE SESION CORRECTO!",
@@ -326,7 +242,7 @@ app.post('/auth', async (req, res)=>{
 			res.end();
 		});
 	} else {
-		res.render('login', {
+		res.render('PaginaAdm/login', {
 			alert: true,
 			alertTitle: "ERROR",
 			alertMessage: "DEBE INGRESAR UN USUARIO Y CONTRASEÑA",
@@ -341,7 +257,7 @@ app.post('/auth', async (req, res)=>{
 //AUTENTICACION QUE USUARIO ESTA CONECTADO
 app.get('/index', (req, res)=>{
 	if (req.session.loggedin) {
-		res.render('index',{
+		res.render('PaginaAdm/index',{
 			login: true,
 			name: req.session.name,
 			role: req.session.role			
@@ -361,7 +277,7 @@ app.get('/emedit/:id', (req, res)=>{
 		if(error){
             console.log(error);
         }else{            
-			res.render('emedit', {
+			res.render('PaginaAdm/emedit', {
 				user: results[0]
 			});        
         }
@@ -377,7 +293,7 @@ app.post('/emupdate', (req, res)=>{
 		if(error){
 			console.log(error);
             }else{
-                res.redirect('emindex');
+                res.redirect('PaginaAdm/emindex');
             }
         }
     );
@@ -424,7 +340,7 @@ app.post('/procreate', async (req, res)=>{
 			if(error){
 				console.log(error);
 			}else{            
-				res.render('procreate', {
+				res.render('PaginaAdm/procreate', {
 					alert: true,
 					alertTitle: "REGISTRO",
 					alertMessage: "PLATILLO REGISTRADO CORRECTAMENTE",
@@ -444,7 +360,7 @@ app.get('/proedit/:id', (req, res)=>{
 		if(error){
             console.log(error);
         }else{            
-			res.render('proedit', {
+			res.render('PaginaAdm/proedit', {
 				nombre: results[0]
 			});        
         }
@@ -502,76 +418,6 @@ app.get('/borcomen/:id', (req, res)=>{
             }else{
                 res.redirect('/vercomen');
         }
-	});
-});
-//GUARDADO DE LOS PEDIDOS
-app.post('/finalizar-pedido', (req, res) => {
-    const { pedido, nota } = req.body;
-    //VALIDAR QUE EL PEDIDO TENGA AL MENOS UN PEDIDO
-    if (!pedido || pedido.length === 0) {
-        return res.json({ success: false, error: 'No se agregaron platillos al pedido.' });
-    }
-    //CALCULAR EL TOTAL DEL PEDIDO
-    const total = pedido.reduce((acc, platillo) => acc + (platillo.precio * platillo.cantidad), 0);
-    //GENERAR NUMERO DE PEDIDO
-    connection.query('SELECT MAX(id) as maxId FROM pedidos', (error, results) => {
-        if (error) {
-            console.log(error);
-            return res.json({ success: false });
-        }
-        let pedidoId = results[0].maxId ? results[0].maxId + 1 : 1;
-        pedidoId = String(pedidoId).padStart(5, '0'); //FORMATO DE 5 DIGITOS
-        //ASEGURAR INTEGRIDAD DE LOS DATOS
-        connection.beginTransaction(function(err) {
-            if (err) { 
-                console.log(err);
-                return res.json({ success: false });
-            }
-            //INSERTAR PEDIDO EN LA TABLA "pedidos"
-            connection.query('INSERT INTO pedidos (pedido_id, fecha, total, nota) VALUES (?, CURDATE(), ?, ?)', [pedidoId, total, nota], (error, results) => {
-                if (error) {
-                    connection.rollback(function() {
-                        console.log(error);
-                        res.json({ success: false });
-                    });
-                } else {
-                    //INSERTAR VALORES EN LA TABLA 'pedido_detalles'
-                    const pedidoDetallesValues = pedido.map(p => [pedidoId, p.id, p.nombre, p.precio, p.cantidad]);
-                    connection.query('INSERT INTO pedido_detalles (pedido_id, platillo_id, nombre, precio, cantidad) VALUES ?', [pedidoDetallesValues], (error, results) => {
-                        if (error) {
-                            connection.rollback(function() {
-                                console.log(error);
-                                res.json({ success: false });
-                            });
-                        } else {
-                            connection.commit(function(err) {
-                                if (err) {
-                                    connection.rollback(function() {
-                                        console.log(err);
-                                        res.json({ success: false });
-                                    });
-                                } else {
-                                    res.json({ success: true, pedido_id: pedidoId });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    });
-});
-//STATUS DE UN PEDIDO
-app.post('/updateStatus/:id', sessionChecker, (req, res)=>{
-	const pedidoId = req.params.id;
-	const status = req.body.status;
-	connection.query('UPDATE pedidos SET status = ? WHERE id = ?', [status, pedidoId], (error, results)=>{
-		if (error) {
-			console.error('Error al actualizar el status:', error);
-			res.status(500).send('Error al actualizar el status');
-		} else {
-			res.status(200).send('Status actualizado correctamente');
-		}
 	});
 });
 
