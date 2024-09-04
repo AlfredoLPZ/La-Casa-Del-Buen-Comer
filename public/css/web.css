@@ -44,11 +44,14 @@ h3{
 }
 .menu-img{
     display: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 1500;
 }
 /*CONTENIDO*/
 .contenido{
     width: 90%;
-    margin: 120px auto 50px auto;
+    margin: 110px auto 50px auto;
     text-align: center;
 }
 /*INFORMACION DE LA FONDA*/
@@ -193,7 +196,7 @@ h3{
 }
 /*MOSTRAR LOS COMENTARIOS*/
 .ver-comen{
-    height: 700px;
+    height: 670px;
     overflow-y: auto;
     border: 2px solid #1C6758;
     border-radius: 10px;
@@ -211,33 +214,12 @@ h3{
     text-align: left;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-/*CHATBOT*/
-.chatbot{
-    display: none;
-    position: fixed;
-    bottom: 80px; /* Ajusta esta distancia según sea necesario */
-    left: 10px; /* Ajusta esta distancia según sea necesario */
-    z-index: 1000; /* Asegúrate de que este z-index sea mayor que el del botón */
-    border: 2px solid #1C6758;
-    border-radius: 10px;
-    background-color: white;
-}
-.chatbot-bt{
-    padding: 10px;
-    background-color: #EEF2E6;
-    border: 2px solid #1C6758;
-    border-radius: 10px;
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    cursor: pointer;
-    z-index: 999;
-}
 /*FOOTER*/
 footer{
     color: #D6CDA4;
     background-color: #1C6758;
     text-align: center;
+    padding: 15px 0px;
 }
 footer a{
     color: #D6CDA4;
@@ -256,7 +238,6 @@ footer a{
     margin: auto;
     margin-top: 25px;
 }
-
 /*
 DISEÑO RESPONSIVO DE LA PAGINA WEB
 (MEDIA QUERY)
@@ -289,6 +270,7 @@ DISEÑO RESPONSIVO DE LA PAGINA WEB
         clip-path: circle(0% at top left);
         transition: clip-path .5s;
         background-color: #EEF2E6;
+        z-index: 1000;
     }
     .nav-links:target{
         clip-path: circle(150% at top left);
@@ -298,6 +280,17 @@ DISEÑO RESPONSIVO DE LA PAGINA WEB
     }
     .menu-img img{
         width: auto;
+    }
+    .close-menu{
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .nav-links:target .close-menu {
+        display: block;
     }
     /*INFORMACION DE LA FONDA*/
     .info-fonda{
